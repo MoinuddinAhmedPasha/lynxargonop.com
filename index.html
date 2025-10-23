@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lynx Argon Op — Official Site</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/fanta.css">
+
+  <meta name="description" content="Official website of Lynx Argon Op (Moinuddin Ahmed Pasha) — First Human to Teach Chemistry in Minecraft." />
+
+  <style>
+    :root {
+      --accent: #6366f1;
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --text-light: #e2e8f0;
+      --text-muted: #94a3b8;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: radial-gradient(circle at top left, #0f172a 0%, #020617 100%);
+      color: var(--text-light);
+      transition: all 0.4s ease;
+    }
+
+    header, footer {
+      background: rgba(30, 41, 59, 0.9);
+      backdrop-filter: blur(8px);
+    }
+
+    .card {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(15px);
+      animation: fadeIn 0.9s forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+   h3, h4 {
+  background: linear-gradient(90deg, #818cf8, #a5b4fc);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+
+    a {
+      transition: all 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--accent);
+      text-shadow: 0 0 6px rgba(99, 102, 241, 0.8);
+    }
+
+    iframe {
+      border-radius: 12px;
+    }
+
+    #reels .min-w-\[160px\],
+    #reels .min-w-\[120px\],
+    #reels .min-w-\[320px\] {
+      background: linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    #reels h4 {
+      color: #c7d2fe;
+    }
+
+    footer a:hover {
+      color: #a5b4fc;
+    }
+  </style>
+</head>
+<body class="fanta-font">
+
+  <header class="shadow-lg sticky top-0 z-40 border-b border-slate-700/60">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <a href="#home" class="flex items-center gap-3">
+        <div class="rounded-full bg-indigo-500/10 p-1">
+          <img src="WhatsApp Image 2025-10-23 at 09.26.32_d6d3ddae.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border-2 border-indigo-500/50">
+        </div>
+        <div>
+          <h1 class="text-lg font-semibold text-indigo-300 tracking-wide">Lynx Argon Op</h1>
+          <p class="text-xs text-gray-400 -mt-0.5">First Human to Teach Chemistry in Minecraft</p>
+        </div>
+      </a>
+      <nav class="hidden md:flex gap-6 items-center text-sm text-gray-300">
+        <a href="#about" class="hover:text-indigo-400">About</a>
+        <a href="#reels" class="hover:text-indigo-400">Popular Reels</a>
+        <a href="#apps" class="hover:text-indigo-400">Upcoming Apps</a>
+        <a href="#courses" class="hover:text-indigo-400">Courses</a>
+        <a href="#resume" class="hover:text-indigo-400">Resume</a>
+      </nav>
+      <div class="md:hidden">
+        <button id="menuBtn" class="p-2 rounded-md focus:ring-2 focus:ring-indigo-300">☰</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden border-t border-slate-700 bg-slate-800">
+      <div class="px-4 pb-4 flex flex-col gap-3 text-sm">
+        <a href="#about" class="py-1">About</a>
+        <a href="#reels" class="py-1">Popular Reels</a>
+        <a href="#apps" class="py-1">Upcoming Apps</a>
+        <a href="#courses" class="py-1">Courses</a>
+        <a href="#resume" class="py-1">Resume</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+    <!-- HOME -->
+    <section id="home" class="grid lg:grid-cols-2 gap-8 items-center fade-in">
+      <div class="text-center lg:text-left">
+        <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">Welcome To <span class="text-indigo-400">lynxargonop.com</span></h2>
+        <p class="mt-4 text-gray-400 max-w-xl mx-auto lg:mx-0">I teach chemistry inside Minecraft, build Websites And Apps, and create educational reels and courses for aspiring developers. Welcome to my official site.</p>
+
+        <div class="mt-6 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+          <a href="#reels" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md shadow-md transition-transform hover:scale-105">Watch Popular Reels</a>
+          <a href="#courses" class="border border-indigo-400 text-indigo-300 px-4 py-2 rounded-md hover:bg-indigo-500/10 transition-transform hover:scale-105">See Courses</a>
+        </div>
+      </div>
+      <div class="flex items-center justify-center">
+        <div class="w-full max-w-xs sm:max-w-sm md:max-w-md card rounded-2xl p-6 bg-slate-800 fade-in" style="animation-delay:0.2s;">
+          <img src="WhatsApp Image 2025-10-23 at 09.26.32_d6d3ddae.jpg" alt="Lynx Argon OP" class="w-28 sm:w-32 md:w-40 h-28 sm:h-32 md:h-40 rounded-full mx-auto object-cover border-4 border-slate-700 shadow-lg" />
+          <h3 class="text-center mt-4 font-semibold text-lg">Moinuddin Ahmed Pasha</h3>
+          <p class="text-center text-sm text-gray-400 mt-1">Influencer · Developer · Tutor</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="fade-in" style="animation-delay:0.4s;">
+      <h3 class="text-2xl sm:text-3xl font-bold text-indigo-400 text-center lg:text-left">About Me</h3>
+      <p class="mt-3 text-gray-400 max-w-3xl mx-auto lg:mx-0 text-center lg:text-left">I'm passionate about merging science with creativity — teaching chemistry inside Minecraft and crafting digital tools to make learning exciting. I also create development courses for beginners to kickstart their journey in coding.</p>
+
+      <div class="mt-6 grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="card rounded-lg p-4 bg-slate-800 hover:scale-105 transition-transform">
+          <h4 class="font-semibold text-indigo-400">Mission</h4>
+          <p class="text-sm text-gray-400 mt-1">Make STEM education fun through gaming and tech.</p>
+        </div>
+        <div class="card rounded-lg p-4 bg-slate-800 hover:scale-105 transition-transform">
+          <h4 class="font-semibold text-indigo-400">Skills</h4>
+          <p class="text-sm text-gray-400 mt-1">HTML, CSS, JavaScript, Firebase, Git, Node.js, Kotlin, React, and Content Creation.</p>
+        </div>
+        <div class="card rounded-lg p-4 bg-slate-800 hover:scale-105 transition-transform">
+          <h4 class="font-semibold text-indigo-400">Creator Title</h4>
+          <p class="text-sm text-gray-400 mt-1">First Human to Teach Chemistry in Minecraft.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- REELS -->
+    <section id="reels" class="fade-in" style="animation-delay:0.6s;">
+      <h3 class="text-2xl sm:text-3xl font-bold text-indigo-400 text-center lg:text-left">Popular Reels</h3>
+      <p class="text-gray-400 mt-2 text-center lg:text-left">A few of my most-watched educational short videos.</p>
+
+      <div class="mt-6 flex gap-6 overflow-x-auto pb-3 snap-x scroll-smooth">
+
+        <!-- Reel 1 -->
+        <div class="min-w-[160px] sm:min-w-[320px] bg-slate-800 rounded-lg p-4 snap-center hover:scale-105 transition-transform">
+          <div class="rounded-md overflow-hidden aspect-[9/16]">
+            <iframe 
+              src="https://www.instagram.com/reel/C-Dbn3QPkLz/embed"
+              class="w-full h-full rounded-md"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <h4 class="font-semibold mt-3">My Edit</h4>
+          <p class="text-xs text-gray-500">1.9M views</p>
+        </div>
+
+        <!-- Reel 2 -->
+        <div class="min-w-[160px] sm:min-w-[320px] bg-slate-800 rounded-lg p-4 snap-center hover:scale-105 transition-transform">
+          <div class="rounded-md overflow-hidden aspect-[9/16]">
+            <iframe 
+              src="https://www.instagram.com/reel/DMW0Fb9zWfc/embed"
+              class="w-full h-full rounded-md"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <h4 class="font-semibold mt-3">Reaction in Minecraft</h4>
+          <p class="text-xs text-gray-500">790K views</p>
+        </div>
+
+        <!-- Reel 3 -->
+        <div class="min-w-[160px] sm:min-w-[320px] bg-slate-800 rounded-lg p-4 snap-center hover:scale-105 transition-transform">
+          <div class="rounded-md overflow-hidden aspect-[9/16]">
+            <iframe 
+              src="https://www.instagram.com/reel/DFb7a15iErq/embed"
+              class="w-full h-full rounded-md"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <h4 class="font-semibold mt-3">Amide to Amine Conversion</h4>
+          <p class="text-xs text-gray-500">375K views</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPS -->
+    <section id="apps" class="fade-in" style="animation-delay:0.8s;">
+      <h3 class="text-2xl sm:text-3xl font-bold text-indigo-400 text-center lg:text-left">My Upcoming Apps</h3>
+      <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="card bg-slate-800 rounded-lg p-5 hover:scale-105 transition-transform">
+          <h4 class="font-semibold">2048 - Chemcraft</h4>
+          <p class="text-sm text-gray-400 mt-1">2048 Chemistry x Minecraft Edition. (Nov 2025)</p>
+        </div>
+        <div class="card bg-slate-800 rounded-lg p-5 hover:scale-105 transition-transform">
+          <h4 class="font-semibold">Twinity</h4>
+          <p class="text-sm text-gray-400 mt-1">Couple Leaderboard App. (Jan 2026)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSES -->
+    <section id="courses" class="fade-in" style="animation-delay:1s;">
+      <h3 class="text-2xl sm:text-3xl font-bold text-indigo-400 text-center lg:text-left">Upcoming Courses</h3>
+      <p class="text-gray-400 mt-2 text-center lg:text-left">Hands-on courses to help you learn by doing.</p>
+
+      <div class="mt-6 grid sm:grid-cols-2 gap-6">
+        <div class="card bg-slate-800 rounded-lg p-5 hover:scale-105 transition-transform">
+          <h4 class="font-semibold">Front-end Fundamentals — Build 3 Projects</h4>
+          <p class="text-sm text-gray-400 mt-1">Learn HTML, CSS & JS while building real projects. (Nov 2025)</p>
+        </div>
+        <div class="card bg-slate-800 rounded-lg p-5 hover:scale-105 transition-transform">
+          <h4 class="font-semibold">Class 12 Organic Chemistry (All Chapters)</h4>
+          <p class="text-sm text-gray-400 mt-1">(Jan 2026)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUME -->
+    <section id="resume" class="fade-in" style="animation-delay:1.2s;">
+      <h3 class="text-2xl sm:text-3xl font-bold text-indigo-400 text-center lg:text-left">My Resume</h3>
+      <p class="text-gray-400 mt-2 text-center lg:text-left">Download or copy my short resume summary below.</p>
+
+      <div class="mt-6 grid md:grid-cols-2 gap-6">
+        <div class="bg-slate-800 p-6 rounded-lg card">
+          <h4 class="font-semibold">Summary</h4>
+          <p class="text-sm text-gray-400 mt-2">Moinuddin Ahmed Pasha — Creator & developer experienced in educational content, Apps, and chemistry-based teaching inside Minecraft. Skilled in Web development and Firebase.</p>
+        </div>
+        <div class="bg-slate-800 p-6 rounded-lg card">
+          <h4 class="font-semibold">Experience & Projects</h4>
+          <ol class="list-decimal list-inside text-sm text-gray-400 mt-2 space-y-1">
+            <li>2048 - Chemcraft Edition — Minecraft x Chemistry Puzzle Game</li>
+            <li>PUBG AI Chatbot</li>
+            <li>Chemistry through Minecraft series</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 text-center md:text-left">
+      <div>© <span id="year"></span> Lynx Argon Op — First Human to Teach Chemistry in Minecraft.</div>
+      <div class="flex gap-3 flex-wrap justify-center md:justify-end">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="https://www.instagram.com/lynx_argon_op" target="_blank">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+  </script>
+
+  <script async src="https://www.instagram.com/embed.js"></script>
+
+</body>
+</html>
