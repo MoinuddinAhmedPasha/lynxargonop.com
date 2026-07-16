@@ -11,19 +11,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&)s3n+@hq6lvz()d#8ic5=a9yc2hq(v-)39^__te6mtw9q#9b2'
+import os
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "lynxargonop.onrender.com",
-    "lynxargonop.com",
-    "www.lynxargonop.com",
-]
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 # -------------------------------------------------------------------
 # Application definition
 # -------------------------------------------------------------------
