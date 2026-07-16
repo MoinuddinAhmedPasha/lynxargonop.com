@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>100 Reasons · Nabeena</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  :root{
+    --bg-0:#0b0409;
+    --bg-1:#170710;
+    --ink:#f9eef4;
+    --ink-dim:#c9adbe;
+    --ink-faint:#9a7f92;
+    --rose:#ff4d82;
+    --rose-soft:#ff8fb5;
+    --violet:#a855e0;
+    --gold:#eec888;
+    --gold-deep:#c99a4c;
+    --glass:rgba(255,255,255,0.045);
+    --glass-line:rgba(255,255,255,0.09);
+    --safe-b:env(safe-area-inset-bottom, 0px);
+    --safe-t:env(safe-area-inset-top, 0px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;}
+  html,body{height:100%;width:100%;background:var(--bg-0);color:var(--ink);font-family:'Poppins',sans-serif;overflow:hidden;position:fixed;inset:0;}
+  body{display:flex;justify-content:center;align-items:center;}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.15s !important;}
+  }
+
+  .bg-gradient{
+    position:absolute;inset:-50%;width:200%;height:200%;
+    background:radial-gradient(circle at 30% 40%, #26001c, var(--bg-0) 68%, #000);
+    animation:breathGlow 24s infinite alternate ease-in-out;z-index:0;
+  }
+  @keyframes breathGlow{
+    0%{background:radial-gradient(circle at 18% 52%,#280019,var(--bg-0) 68%,#000);}
+    50%{background:radial-gradient(circle at 74% 28%,#2c0126,var(--bg-0) 68%,#000);}
+    100%{background:radial-gradient(circle at 46% 76%,#1c0a2a,var(--bg-0) 68%,#000);}
+  }
+  .grain{position:absolute;inset:0;z-index:2;opacity:0.035;pointer-events:none;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  #bg-canvas{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.45;}
+
+  /* ---------- LANDING ---------- */
+  #landing{
+    position:absolute;inset:0;z-index:50;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;padding:2rem 1.6rem;background:rgba(8,2,8,0.78);backdrop-filter:blur(18px) saturate(1.1);
+    transition:opacity 1s ease, filter 1s ease;
+  }
+  .eyebrow{
+    font-size:0.68rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:500;
+    opacity:0.85;margin-bottom:1.1rem;
+  }
+  #landing h1{
+    font-family:'Playfair Display',serif;font-size:clamp(2.3rem,9.5vw,4.6rem);font-weight:700;
+    background:linear-gradient(150deg,#ffd9e8,#ff6fa0 35%,#d94ee0 65%,#8a5cff);
+    background-size:300% 300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    animation:gradientMove 9s ease infinite alternate;letter-spacing:-0.01em;line-height:1.16;margin-bottom:0.9rem;
+  }
+  @keyframes gradientMove{0%{background-position:0% 50%;}100%{background-position:100% 50%;}}
+  .subtitle{
+    font-size:clamp(0.98rem,3.6vw,1.28rem);color:var(--ink-dim);font-family:'Playfair Display',serif;font-style:italic;
+    max-width:520px;line-height:1.75;opacity:0.92;
+  }
+  .btn-start{
+    margin-top:2.4rem;padding:1rem 3rem;font-size:1.02rem;font-weight:500;letter-spacing:0.3px;border:none;border-radius:60px;
+    background:linear-gradient(135deg,#ff2f83,#9b2de0);color:#fff;cursor:pointer;
+    box-shadow:0 10px 36px rgba(255,42,133,0.38), inset 0 1px 0 rgba(255,255,255,0.25);
+    transition:transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .btn-start:active{transform:scale(0.95);box-shadow:0 6px 22px rgba(255,42,133,0.3);}
+  .btn-start:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+  /* ---------- APP SHELL ---------- */
+  #app{
+    position:relative;z-index:10;width:100%;height:100%;display:none;flex-direction:column;
+    justify-content:space-between;align-items:center;
+    padding:calc(0.5rem + var(--safe-t)) 0 calc(0.5rem + var(--safe-b));
+    opacity:0;transition:opacity 1.1s ease;
+  }
+
+  .love-counter{
+    margin-top:0.3rem;background:var(--glass);backdrop-filter:blur(18px);border:1px solid var(--glass-line);
+    border-radius:32px;padding:0.65rem 1.1rem;width:91%;max-width:400px;text-align:center;
+    box-shadow:0 8px 30px rgba(0,0,0,0.25);
+  }
+  .counter-title{font-size:0.66rem;color:var(--gold);letter-spacing:2.2px;text-transform:uppercase;font-weight:400;margin-bottom:0.35rem;opacity:0.9;}
+  .counter-values{display:flex;justify-content:space-around;gap:0.3rem;}
+  .time-val{font-size:clamp(1.15rem,4.2vw,1.7rem);font-weight:600;font-variant-numeric:tabular-nums;
+    background:linear-gradient(135deg,#ffc2da,var(--rose-soft));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .time-label{font-size:0.54rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.6px;}
+
+  /* ---------- CARD STACK ---------- */
+  .carousel-container{
+    flex:1;width:100%;display:flex;align-items:center;justify-content:center;position:relative;
+    perspective:1500px;touch-action:pan-y;padding:0.1rem 0;
+  }
+  .card{
+    width:88%;max-width:430px;height:52vh;max-height:470px;min-height:300px;
+    background:linear-gradient(155deg, rgba(28,12,24,0.78), rgba(16,6,16,0.7));
+    backdrop-filter:blur(26px);border:1px solid var(--glass-line);border-radius:34px;
+    padding:1.7rem 1.5rem 1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    text-align:center;position:absolute;will-change:transform,opacity;
+    box-shadow:0 26px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .card.animate{transition:transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease;}
+  .card::before{
+    content:'';position:absolute;inset:0;border-radius:34px;padding:1.4px;
+    background:conic-gradient(from 120deg, transparent, rgba(255,90,150,0.35), transparent 35%, rgba(190,90,255,0.3) 60%, transparent 85%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:0.7;
+  }
+  .card::after{
+    content:'';position:absolute;top:0;left:12%;right:12%;height:1px;
+    background:linear-gradient(90deg,transparent, rgba(255,255,255,0.35), transparent);
+  }
+  .card-top{display:flex;flex-direction:column;align-items:center;gap:0.3rem;}
+  .chapter-divider{display:flex;align-items:center;gap:0.5rem;opacity:0.85;}
+  .chapter-divider .line{width:14px;height:1px;background:linear-gradient(90deg,transparent,var(--gold));}
+  .chapter-divider .line.r{background:linear-gradient(90deg,var(--gold),transparent);}
+  .chapter-title{font-size:0.62rem;color:var(--gold);letter-spacing:2.4px;text-transform:uppercase;font-weight:400;}
+  .reason-number{font-family:'Playfair Display',serif;font-size:0.82rem;color:var(--ink-faint);font-style:italic;margin-top:0.15rem;letter-spacing:0.4px;}
+  .reason-text{
+    font-family:'Playfair Display',serif;font-size:clamp(1.08rem,4.1vw,1.46rem);font-style:italic;font-weight:400;
+    line-height:1.55;flex:1;display:flex;align-items:center;justify-content:center;padding:0.5rem 0.15rem;width:100%;
+    color:#faf3f7;text-shadow:0 2px 14px rgba(0,0,0,0.35);
+  }
+  .reason-text::before{content:'\201C';}
+  .reason-text::after{content:'\201D';}
+  .reason-emoji{font-size:clamp(2rem,7.5vw,2.7rem);animation:floatEmoji 4.8s infinite ease-in-out;filter:drop-shadow(0 0 16px rgba(255,90,150,0.3));}
+  @keyframes floatEmoji{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-8px) scale(1.03);}}
+
+  .swipe-hint{
+    position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:0.68rem;color:var(--ink-faint);
+    letter-spacing:0.5px;opacity:0;animation:hintFade 3.6s ease 1.2s 1;pointer-events:none;display:flex;gap:0.4rem;align-items:center;
+  }
+  @keyframes hintFade{0%{opacity:0;}15%{opacity:0.85;}35%{opacity:0.85;transform:translateX(-50%) translateX(6px);}55%{opacity:0.85;transform:translateX(-50%) translateX(-6px);}80%{opacity:0.85;}100%{opacity:0;}}
+
+  /* ---------- CONTROLS ---------- */
+  .controls{width:100%;display:flex;flex-direction:column;align-items:center;gap:0.55rem;padding-bottom:0.2rem;}
+
+  .chapter-progress{display:flex;gap:4px;width:78%;max-width:320px;}
+  .chapter-seg{flex:1;height:3px;border-radius:4px;background:rgba(255,255,255,0.08);overflow:hidden;position:relative;}
+  .chapter-seg .fill{
+    position:absolute;inset:0 auto 0 0;width:0%;border-radius:4px;
+    background:linear-gradient(90deg,var(--rose),var(--violet));
+    transition:width 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .chapter-seg.done .fill{width:100%;}
+  #progress-text{font-size:0.7rem;color:var(--ink-dim);letter-spacing:0.5px;font-variant-numeric:tabular-nums;}
+
+  .nav-row{display:flex;gap:1.8rem;align-items:center;}
+  .btn-nav{
+    background:var(--glass);border:1px solid var(--glass-line);color:#fff;width:46px;height:46px;border-radius:50%;
+    font-size:1.05rem;display:flex;justify-content:center;align-items:center;cursor:pointer;
+    transition:transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;backdrop-filter:blur(8px);
+  }
+  .btn-nav:active{background:rgba(255,255,255,0.16);transform:scale(0.9);}
+  .btn-nav:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+  #btn-secret{
+    padding:0.62rem 1.9rem;font-size:0.88rem;font-weight:500;letter-spacing:0.4px;border:none;border-radius:50px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241207;cursor:pointer;
+    box-shadow:0 0 28px rgba(230,190,120,0.28), inset 0 1px 0 rgba(255,255,255,0.4);
+    transition:transform 0.25s ease;
+  }
+  #btn-secret:active{transform:scale(0.94);}
+  #btn-secret:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+
+  /* ---------- LETTER MODAL ---------- */
+  #letter-modal{
+    position:fixed;inset:0;background:rgba(4,0,4,0.94);backdrop-filter:blur(26px);z-index:100;display:none;
+    justify-content:center;align-items:center;padding:1.2rem;
+  }
+  .letter-content{
+    position:relative;background:linear-gradient(160deg,#fdf7ee,#f7ecdd);color:#2a1c1c;width:100%;max-width:520px;
+    max-height:80vh;overflow-y:auto;padding:2.3rem 2rem 2rem;border-radius:24px;
+    font-family:'Dancing Script',cursive;font-size:clamp(1.15rem,3.8vw,1.55rem);line-height:1.85;
+    box-shadow:0 30px 90px rgba(0,0,0,0.5), 0 0 70px rgba(255,215,200,0.12);scrollbar-width:thin;
+  }
+  .letter-close{
+    position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;border:none;
+    background:rgba(0,0,0,0.08);color:#4a3030;font-size:1rem;font-family:'Poppins',sans-serif;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:background 0.2s ease;
+  }
+  .letter-close:active{background:rgba(0,0,0,0.16);}
+
+  #final-msg{
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:200;display:none;
+  }
+  #final-msg .title{
+    font-family:'Playfair Display',serif;font-size:clamp(2.4rem,8.5vw,5rem);font-weight:700;color:#fff;
+    text-shadow:0 0 60px var(--rose), 0 0 120px var(--violet);animation:popIn 0.9s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  #btn-replay{
+    margin-top:1.6rem;padding:0.7rem 2rem;font-size:0.85rem;letter-spacing:0.5px;border:1px solid rgba(255,255,255,0.3);
+    border-radius:50px;background:rgba(255,255,255,0.08);color:#fff;cursor:pointer;backdrop-filter:blur(10px);
+    animation:fadeInUp 0.8s ease 0.6s both;
+  }
+  #btn-replay:active{transform:scale(0.95);}
+  @keyframes popIn{0%{transform:translate(-50%,-50%) scale(0.4);opacity:0;}100%{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+  @keyframes fadeInUp{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:translateY(0);}}
+
+  @media (max-width:480px){
+    .card{height:48vh;min-height:270px;padding:1.4rem 1.2rem 1.2rem;}
+    .love-counter{padding:0.55rem 0.9rem;}
+    .btn-nav{width:42px;height:42px;font-size:1rem;}
+    .nav-row{gap:1.3rem;}
+    #btn-secret{padding:0.55rem 1.6rem;font-size:0.82rem;}
+  }
+  @media (max-width:380px){
+    .card{height:45vh;min-height:235px;}
+    .reason-text{font-size:clamp(0.92rem,3.7vw,1.05rem);}
+  }
+  @media (max-height:640px){
+    .card{height:44vh;min-height:210px;}
+  }
+</style>
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <canvas id="bg-canvas"></canvas>
+  <div class="grain"></div>
+
+  <div id="landing">
+    <div class="eyebrow">A hundred small proofs</div>
+    <h1>100 Reasons<br>Why I Love You</h1>
+    <p class="subtitle">For Nabeena — every reason is a heartbeat, a memory, a promise.</p>
+    <button class="btn-start" onclick="startJourney()">Begin Our Journey</button>
+  </div>
+
+  <div id="app">
+    <div class="love-counter">
+      <div class="counter-title">Together since</div>
+      <div class="counter-values">
+        <div><span class="time-val" id="days">0</span><br><span class="time-label">Days</span></div>
+        <div><span class="time-val" id="hours">0</span><br><span class="time-label">Hours</span></div>
+        <div><span class="time-val" id="minutes">0</span><br><span class="time-label">Mins</span></div>
+        <div><span class="time-val" id="seconds">0</span><br><span class="time-label">Secs</span></div>
+      </div>
+    </div>
+
+    <div class="carousel-container" id="carousel">
+      <div class="swipe-hint" id="swipeHint">← swipe to continue →</div>
+    </div>
+
+    <div class="controls">
+      <div id="progress-text">1 / 100</div>
+      <div class="chapter-progress" id="chapterProgress"></div>
+      <div class="nav-row">
+        <button class="btn-nav" id="btn-prev" onclick="prevCard()" aria-label="Previous">❮</button>
+        <button class="btn-nav" id="btn-next" onclick="nextCard()" aria-label="Next">❯</button>
+      </div>
+      <button id="btn-secret" onclick="revealLetter()">✨ one more surprise</button>
+    </div>
+  </div>
+
+  <div id="letter-modal">
+    <div class="letter-content">
+      <button class="letter-close" onclick="closeLetter()">✕</button>
+      <div id="typewriter"></div>
+    </div>
+  </div>
+
+  <div id="final-msg">
+    <div class="title">Forever &amp; Always</div>
+    <div><button id="btn-replay" onclick="restartAll()">Read it again</button></div>
+  </div>
+
+<script>
+  // ===== DATA =====
+  const reasonsData = [
+    { chapter: "Chapter 1 – The Little Things", text: "The way your eyes light up when you talk about something you love." },
+    { chapter: "Chapter 1 – The Little Things", text: "Your adorable laugh that instantly makes me smile." },
+    { chapter: "Chapter 1 – The Little Things", text: "The way you say my name like it's the only word that matters." },
+    { chapter: "Chapter 1 – The Little Things", text: "How you always know exactly how to cheer me up." },
+    { chapter: "Chapter 1 – The Little Things", text: "Your random texts that make my day brighter." },
+    { chapter: "Chapter 1 – The Little Things", text: "The cute faces you make when you're thinking deeply." },
+    { chapter: "Chapter 1 – The Little Things", text: "How you remember the smallest details about our conversations." },
+    { chapter: "Chapter 1 – The Little Things", text: "Your smile, which brightens even my darkest days." },
+    { chapter: "Chapter 1 – The Little Things", text: "The way you light up every room you enter." },
+    { chapter: "Chapter 1 – The Little Things", text: "Your beautiful voice and the way you express yourself." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "Your incredible kindness towards everyone around you." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "The passion you pour into everything you do." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "How deeply you care for the people you love." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "Your unmatched intelligence and brilliant mind." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "The way you stay positive even when things are tough." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "Your unique sense of humor that perfectly matches mine." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "Your unwavering honesty and integrity." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "The graceful way you handle challenges." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "How easily you inspire me to be a better person." },
+    { chapter: "Chapter 2 – Your Beautiful Soul", text: "Your confidence that makes you glow from the inside out." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "You give me a sense of peace I've never known before." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "With you, I feel completely understood." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "You make me feel like I can conquer the world." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "The way my heart races every time I see you." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "You make every ordinary moment feel extraordinary." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "I feel safe enough to be completely vulnerable with you." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "You never judge me for my mistakes." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "The butterflies in my stomach that still appear after all this time." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "You make me believe in true love." },
+    { chapter: "Chapter 3 – My Safe Haven", text: "Being with you feels like a beautiful dream I never want to wake from." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "Your mesmerizing eyes that I could get lost in forever." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "The way your hair falls perfectly even when it's messy." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "Your absolute elegance in everything you wear." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "That cute little wrinkle in your nose when you laugh." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "Your natural beauty that needs no filter." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "The glow on your face when you talk about your passions." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "The way you look at me across a crowded room." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "Your voice, which is my favorite sound in the world." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "The simple fact that you are the most gorgeous person I know." },
+    { chapter: "Chapter 4 – Stunning Inside & Out", text: "Your radiant presence that makes everything better." },
+    { chapter: "Chapter 5 – Our Memories", text: "Every single memory we've created together is a treasure to me." },
+    { chapter: "Chapter 5 – Our Memories", text: "The way we can communicate without even saying a word." },
+    { chapter: "Chapter 5 – Our Memories", text: "How we can be totally silly and weird together." },
+    { chapter: "Chapter 5 – Our Memories", text: "The late-night conversations where we bare our souls." },
+    { chapter: "Chapter 5 – Our Memories", text: "Every inside joke that only we understand." },
+    { chapter: "Chapter 5 – Our Memories", text: "How you support my dreams as if they were your own." },
+    { chapter: "Chapter 5 – Our Memories", text: "The way you make every journey an adventure." },
+    { chapter: "Chapter 5 – Our Memories", text: "Because a life without you just wouldn't make sense." },
+    { chapter: "Chapter 5 – Our Memories", text: "For being my absolute best friend." },
+    { chapter: "Chapter 5 – Our Memories", text: "Because I love you more today than yesterday, but less than tomorrow." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "The way you challenge me to grow and learn." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "How we perfectly balance each other out." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "Your patience with me even when I'm being difficult." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "The comfort of knowing you are mine." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "Every time you say 'I love you' and I feel it in my core." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "How you make me feel like the luckiest person alive." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "The way our souls seem to recognize each other." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "How you finish my sentences when I struggle for words." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "The way you look at me like I'm the only person in the room." },
+    { chapter: "Chapter 6 – The Way We Connect", text: "How you make even silence feel comfortable." },
+    { chapter: "Chapter 7 – Infinite Love", text: "Your gentle touch that sends shivers down my spine." },
+    { chapter: "Chapter 7 – Infinite Love", text: "The way you make me feel wanted and desired." },
+    { chapter: "Chapter 7 – Infinite Love", text: "How you always believe in me even when I doubt myself." },
+    { chapter: "Chapter 7 – Infinite Love", text: "Your forgiving heart that never holds grudges." },
+    { chapter: "Chapter 7 – Infinite Love", text: "The way you make even the mundane magical." },
+    { chapter: "Chapter 7 – Infinite Love", text: "How you've shown me what true love really means." },
+    { chapter: "Chapter 7 – Infinite Love", text: "Your ability to make me laugh at my own jokes." },
+    { chapter: "Chapter 7 – Infinite Love", text: "The way you hold my hand like you'll never let go." },
+    { chapter: "Chapter 7 – Infinite Love", text: "How you make every day feel like a new beginning." },
+    { chapter: "Chapter 7 – Infinite Love", text: "Your beautiful mind that never ceases to amaze me." },
+    { chapter: "Chapter 7 – Infinite Love", text: "The way you care for me so selflessly." },
+    { chapter: "Chapter 7 – Infinite Love", text: "How you make me feel seen and heard." },
+    { chapter: "Chapter 7 – Infinite Love", text: "Your strength that inspires me every single day." },
+    { chapter: "Chapter 7 – Infinite Love", text: "The way you make me want to be a better man." },
+    { chapter: "Chapter 7 – Infinite Love", text: "How you've turned my world upside down in the best way." },
+    { chapter: "Chapter 8 – Our Future", text: "Because I can't imagine my future without you in it." },
+    { chapter: "Chapter 8 – Our Future", text: "The way you make me excited for what's to come." },
+    { chapter: "Chapter 8 – Our Future", text: "How you've made me believe in forever." },
+    { chapter: "Chapter 8 – Our Future", text: "Your unwavering faith in us." },
+    { chapter: "Chapter 8 – Our Future", text: "The way you talk about our future like it's already written." },
+    { chapter: "Chapter 8 – Our Future", text: "How you make me want to build a life with you." },
+    { chapter: "Chapter 8 – Our Future", text: "Because every day with you is a step toward forever." },
+    { chapter: "Chapter 8 – Our Future", text: "The way you've healed parts of me I thought were broken." },
+    { chapter: "Chapter 8 – Our Future", text: "How you make me feel like I'm home." },
+    { chapter: "Chapter 8 – Our Future", text: "Because you are my greatest adventure." },
+    { chapter: "Chapter 8 – Our Future", text: "The way you make me want to be vulnerable." },
+    { chapter: "Chapter 8 – Our Future", text: "How you've shown me the meaning of unconditional love." },
+    { chapter: "Chapter 8 – Our Future", text: "Because you understand me like no one else." },
+    { chapter: "Chapter 8 – Our Future", text: "The way you make my heart skip a beat." },
+    { chapter: "Chapter 8 – Our Future", text: "How you inspire me to dream bigger." },
+    { chapter: "Chapter 8 – Our Future", text: "Because you're the best part of my every day." },
+    { chapter: "Chapter 8 – Our Future", text: "The way you make me feel like I can fly." },
+    { chapter: "Chapter 8 – Our Future", text: "How you've made my life infinitely better." },
+    { chapter: "Chapter 8 – Our Future", text: "Because you're the reason I believe in magic." },
+    { chapter: "Chapter 8 – Our Future", text: "The way you make even the worst days bearable." },
+    { chapter: "Chapter 8 – Our Future", text: "How you've become my favorite person in the world." },
+    { chapter: "Chapter 8 – Our Future", text: "Because you're everything I never knew I needed." },
+    { chapter: "Chapter 8 – Our Future", text: "The way you make me feel like I matter." },
+    { chapter: "Chapter 8 – Our Future", text: "How you've made me a better version of myself." },
+    { chapter: "Chapter 100 – Endless Love", text: "Because no matter how many reasons I list, my love for you is infinite and cannot be quantified. You are my forever, Nabeena." }
+  ];
+
+  const totalCards = reasonsData.length;
+  const startDate = new Date('2023-02-05T00:00:00');
+  let currentIndex = 0;
+
+  // ---- derive chapter groups for segmented progress ----
+  const chapterGroups = [];
+  reasonsData.forEach((r, i) => {
+    const last = chapterGroups[chapterGroups.length - 1];
+    if (!last || last.name !== r.chapter) chapterGroups.push({ name: r.chapter, start: i, end: i });
+    else last.end = i;
+  });
+
+  function buildChapterProgress() {
+    const wrap = document.getElementById('chapterProgress');
+    wrap.innerHTML = '';
+    chapterGroups.forEach(() => {
+      const seg = document.createElement('div');
+      seg.className = 'chapter-seg';
+      seg.innerHTML = '<div class="fill"></div>';
+      wrap.appendChild(seg);
+    });
+  }
+
+  function updateChapterProgress() {
+    const segs = document.querySelectorAll('.chapter-seg');
+    chapterGroups.forEach((g, gi) => {
+      const seg = segs[gi];
+      const fill = seg.querySelector('.fill');
+      if (currentIndex > g.end) { fill.style.width = '100%'; }
+      else if (currentIndex < g.start) { fill.style.width = '0%'; }
+      else {
+        const span = g.end - g.start + 1;
+        const progressed = currentIndex - g.start + 1;
+        fill.style.width = `${(progressed / span) * 100}%`;
+      }
+    });
+  }
+
+  function updateTimer() {
+    const diff = new Date() - startDate;
+    document.getElementById('days').innerText = Math.floor(diff / 86400000);
+    document.getElementById('hours').innerText = String(Math.floor((diff / 3600000) % 24)).padStart(2, '0');
+    document.getElementById('minutes').innerText = String(Math.floor((diff / 60000) % 60)).padStart(2, '0');
+    document.getElementById('seconds').innerText = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+  }
+
+  // ---- carousel ----
+  const carousel = document.getElementById('carousel');
+  let dragX = 0, dragging = false, startX = 0, startY = 0, axisLocked = null, cardEls = [];
+
+  function initCarousel() {
+    cardEls = reasonsData.map((reason, index) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="chapter-divider"><span class="line"></span><span class="chapter-title">${reason.chapter}</span><span class="line r"></span></div>
+          <div class="reason-number">No. ${String(index + 1).padStart(3, '0')}</div>
+        </div>
+        <div class="reason-text">${reason.text}</div>
+        <div class="reason-emoji">❤️</div>
+      `;
+      carousel.appendChild(card);
+      return card;
+    });
+    renderStack(true);
+  }
+
+  function cardTransform(offset, drag) {
+    // offset: position relative to current (-1, 0, 1, ...)
+    const d = drag / 260; // normalized drag influence
+    const pos = offset + d;
+    const abs = Math.min(Math.abs(pos), 2.4);
+    const x = pos * 92;
+    const scale = 1 - abs * 0.14;
+    const rotY = pos * -14;
+    const rotX = Math.max(0, abs * 5);
+    const z = -abs * 140;
+    const opacity = Math.max(0, 1 - abs * 0.62);
+    return { x, scale, rotY, rotX, z, opacity, abs };
+  }
+
+  function renderStack(instant) {
+    cardEls.forEach((card, i) => {
+      const offset = i - currentIndex;
+      if (Math.abs(offset) > 2 && !dragging) {
+        card.style.opacity = '0';
+        card.style.pointerEvents = 'none';
+        card.classList.remove('animate');
+        return;
+      }
+      const t = cardTransform(offset, dragging ? dragX : 0);
+      card.classList.toggle('animate', !dragging);
+      card.style.transform = `translate3d(${t.x}px,0,${t.z}px) scale(${t.scale}) rotateY(${t.rotY}deg) rotateX(${t.rotX}deg)`;
+      card.style.opacity = String(t.opacity);
+      card.style.zIndex = String(100 - Math.round(t.abs * 10));
+      card.style.pointerEvents = offset === 0 ? 'auto' : 'none';
+    });
+  }
+
+  function updateUI() {
+    renderStack(false);
+    updateChapterProgress();
+    document.getElementById('progress-text').innerText = `${currentIndex + 1} / ${totalCards}`;
+    const p = document.getElementById('btn-prev');
+    p.style.opacity = currentIndex === 0 ? '0.25' : '1';
+    p.style.pointerEvents = currentIndex === 0 ? 'none' : 'auto';
+    const isLast = currentIndex === totalCards - 1;
+    document.getElementById('btn-next').style.display = isLast ? 'none' : 'flex';
+    document.getElementById('btn-secret').style.display = isLast ? 'inline-block' : 'none';
+  }
+
+  function nextCard() { if (currentIndex < totalCards - 1) { currentIndex++; updateUI(); buzz(8); } }
+  function prevCard() { if (currentIndex > 0) { currentIndex--; updateUI(); buzz(8); } }
+  function buzz(ms) { if (navigator.vibrate) navigator.vibrate(ms); }
+
+  // ---- pointer-driven drag (unifies touch + mouse) ----
+  carousel.addEventListener('pointerdown', e => {
+    if (e.target.closest('.btn-nav')) return;
+    dragging = true; axisLocked = null; dragX = 0;
+    startX = e.clientX; startY = e.clientY;
+    carousel.setPointerCapture(e.pointerId);
+  });
+  carousel.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    const dx = e.clientX - startX, dy = e.clientY - startY;
+    if (axisLocked === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+      axisLocked = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    }
+    if (axisLocked === 'y') return;
+    dragX = dx;
+    // rubber-band at the ends
+    if ((currentIndex === 0 && dragX > 0) || (currentIndex === totalCards - 1 && dragX < 0)) {
+      dragX *= 0.35;
+    }
+    renderStack(false);
+  });
+  function endDrag(e) {
+    if (!dragging) return;
+    dragging = false;
+    if (axisLocked === 'x') {
+      const threshold = 70;
+      if (dragX < -threshold) nextCard();
+      else if (dragX > threshold) prevCard();
+      else { dragX = 0; renderStack(false); }
+    } else {
+      dragX = 0; renderStack(false);
+    }
+  }
+  carousel.addEventListener('pointerup', endDrag);
+  carousel.addEventListener('pointercancel', endDrag);
+  carousel.addEventListener('pointerleave', e => { if (dragging && e.buttons === 0) endDrag(e); });
+
+  document.addEventListener('keydown', e => {
+    if (document.getElementById('app').style.display === 'none') return;
+    if (e.key === 'ArrowRight') nextCard();
+    if (e.key === 'ArrowLeft') prevCard();
+  });
+
+  function startJourney() {
+    document.getElementById('landing').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('landing').style.display = 'none';
+      const app = document.getElementById('app');
+      app.style.display = 'flex';
+      buildChapterProgress();
+      setTimeout(() => {
+        app.style.opacity = '1';
+        initCarousel();
+        updateUI();
+        updateTimer();
+        setInterval(updateTimer, 1000);
+        startCanvas();
+      }, 80);
+    }, 850);
+  }
+
+  function restartAll() {
+    document.getElementById('final-msg').style.display = 'none';
+    document.getElementById('letter-modal').style.display = 'none';
+    currentIndex = 0;
+    updateUI();
+  }
+
+  // ---- ambient canvas particles ----
+  const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
+  let particles = [], w, h;
+  function resizeCanvas() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+  class Particle {
+    constructor(x, y, isHeart) {
+      this.x = x ?? Math.random() * w;
+      this.y = y ?? h + Math.random() * 50;
+      this.size = isHeart ? Math.random() * 6 + 3 : Math.random() * 2.4 + 0.8;
+      this.speedY = Math.random() * 0.55 + 0.28;
+      this.speedX = (Math.random() - 0.5) * 0.35;
+      this.isHeart = isHeart;
+    }
+    update() { this.y -= this.speedY; this.x += this.speedX; if (this.y < -40) this.y = h + 40; }
+    draw() {
+      ctx.fillStyle = this.isHeart ? '#ff3b7a' : '#ff8fb5';
+      ctx.globalAlpha = this.isHeart ? 0.42 : 0.26;
+      if (this.isHeart) {
+        ctx.save(); ctx.translate(this.x, this.y); ctx.scale(this.size / 16, this.size / 16);
+        ctx.beginPath(); ctx.moveTo(10, 6); ctx.quadraticCurveTo(10, 0, 15, 0); ctx.quadraticCurveTo(20, 0, 20, 6);
+        ctx.quadraticCurveTo(20, 12, 10, 20); ctx.quadraticCurveTo(0, 12, 0, 6); ctx.quadraticCurveTo(0, 0, 5, 0);
+        ctx.quadraticCurveTo(10, 0, 10, 6); ctx.fill(); ctx.restore();
+      } else { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+    }
+  }
+  let rafId;
+  function startCanvas() {
+    particles = [];
+    for (let i = 0; i < 26; i++) particles.push(new Particle());
+    for (let i = 0; i < 9; i++) particles.push(new Particle(null, null, true));
+    cancelAnimationFrame(rafId);
+    const animate = () => { ctx.clearRect(0, 0, w, h); particles.forEach(p => { p.update(); p.draw(); }); rafId = requestAnimationFrame(animate); };
+    animate();
+  }
+
+  // ---- letter ----
+  const letterText = `My Dearest Nabeena,\n\nIf you are reading this, you've journeyed through 100 reasons why I love you. Yet 100 is only a beginning.\n\nYou have brought light, joy, and meaning into my life since February 5, 2023. Every moment with you is precious.\n\nThank you for being you. I love you endlessly.\n\nForever yours`;
+  let letterIndex = 0, typingTimer = null;
+  function typeWriter() {
+    const el = document.getElementById('typewriter');
+    if (letterIndex < letterText.length) {
+      el.innerHTML += letterText.charAt(letterIndex) === '\n' ? '<br>' : letterText.charAt(letterIndex);
+      letterIndex++;
+      typingTimer = setTimeout(typeWriter, 32);
+    } else {
+      typingTimer = setTimeout(finalCelebration, 1200);
+    }
+  }
+  function revealLetter() {
+    document.getElementById('letter-modal').style.display = 'flex';
+    document.getElementById('typewriter').innerHTML = '';
+    letterIndex = 0;
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(typeWriter, 250);
+  }
+  function closeLetter() {
+    clearTimeout(typingTimer);
+    document.getElementById('letter-modal').style.display = 'none';
+  }
+  function finalCelebration() {
+    document.getElementById('letter-modal').style.display = 'none';
+    document.getElementById('final-msg').style.display = 'block';
+    const flash = document.createElement('div');
+    flash.style.cssText = 'position:fixed;inset:0;background:#fff;z-index:199;opacity:0.55;transition:opacity 0.8s;pointer-events:none;';
+    document.body.appendChild(flash);
+    requestAnimationFrame(() => { flash.style.opacity = '0'; setTimeout(() => flash.remove(), 800); });
+    buzz([200, 100, 200]);
+    const end = Date.now() + 8000;
+    (function burst() {
+      if (Date.now() > end) return;
+      confetti({ particleCount: 55, spread: 68, origin: { x: Math.random(), y: Math.random() * 0.3 } });
+      setTimeout(burst, 260);
+    })();
+  }
+</script>
+</body>
+</html>

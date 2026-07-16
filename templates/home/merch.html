@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#020617">
+  <title>Lynx Argon Op — Merch</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body { background: radial-gradient(circle at top left, #0f172a 0%, #020617 100%); color: #e2e8f0; }
+    .card { background: linear-gradient(145deg, #0f172a, #111827); box-shadow: 0 8px 30px rgba(0,0,0,0.45); }
+  </style>
+</head>
+
+<body class="antialiased font-sans min-h-screen flex flex-col">
+
+<header class="sticky top-0 z-40 bg-slate-900/80 border-b border-slate-700">
+  <div class="max-w-4xl mx-auto px-4 flex items-center justify-between h-16">
+    <a href="/index.html" class="flex items-center gap-3">
+      <img src="images/dp.jpg" class="w-9 h-9 rounded-full border-2 border-indigo-500/50">
+      <span class="text-indigo-300 font-semibold">Lynx Argon Op</span>
+    </a>
+    <nav class="hidden sm:flex gap-4 items-center">
+      <a href="/index.html" class="text-sm text-gray-300 hover:text-indigo-400">Home</a>
+      <a href="/merch.html" class="text-sm px-3 py-1 rounded-md bg-indigo-600/10 text-indigo-300 shadow-sm">Merch</a>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 py-8 flex-grow">
+  <h1 class="text-center text-2xl font-extrabold text-indigo-400 mb-6">Merch Store</h1>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+
+
+ <!-- DMT Shirt -->
+    <a href="dmt-shirt.html" class="card rounded-xl overflow-hidden hover:ring hover:ring-indigo-500 transition">
+      <img src="images/dmt-shirt1.jpg" class="h-40 w-full object-cover" />
+      <div class="p-3 text-center">
+        <h3 class="text-sm font-medium text-indigo-200">DMT Shirt</h3>
+        <p class="text-lg font-bold text-indigo-400 price"
+           data-inr="999"
+           data-usd-main="50"
+           data-usd-rest="50">Loading...</p>
+      </div>
+    </a>
+
+    <!-- DMT Hoodie -->
+    <a href="dmt-hoodie.html" class="card rounded-xl overflow-hidden hover:ring hover:ring-indigo-500 transition">
+      <img src="images/dmt-hoodie1.jpg" class="h-40 w-full object-cover" />
+      <div class="p-3 text-center">
+        <h3 class="text-sm font-medium text-indigo-200">DMT Hoodie</h3>
+        <p class="text-lg font-bold text-indigo-400 price"
+           data-inr="1499"
+           data-usd-main="70"
+           data-usd-rest="70">Loading...</p>
+      </div>
+    </a>
+
+
+    <!-- Hoodie Product -->
+    <a href="Cocaine.html" class="card rounded-xl overflow-hidden hover:ring hover:ring-indigo-500 transition">
+      <img src="images/casual-comfy-hoodie-mockup-with-front-pouch-pocket-and-adjustable-drawstring-hood-seo-0956 (1).jpg"
+          class="h-40 w-full object-cover" />
+      <div class="p-3 text-center">
+        <h3 class="text-sm font-medium text-indigo-200">High On Cocaine <br> Hoodie</h3>
+        <p class="text-lg font-bold text-indigo-400 price"
+           data-inr="1499"
+           data-usd-main="70"
+           data-usd-rest="60">Loading...</p>
+      </div>
+    </a>
+
+    <!-- Meth Product -->
+    <a href="Methamphetamine.html" class="card rounded-xl overflow-hidden hover:ring hover:ring-indigo-500 transition">
+      <img src="images/c10h15n.jpg"
+          class="h-40 w-full object-cover" />
+      <div class="p-3 text-center">
+        <h3 class="text-sm font-medium text-indigo-200">Cooking Methamphetamine</h3>
+        <p class="text-lg font-bold text-indigo-400 price"
+           data-inr="1499"
+           data-usd-main="70"
+           data-usd-rest="60">Loading...</p>
+      </div>
+    </a>
+
+
+  </div>
+</main>
+
+<footer class="border-t border-slate-700 text-gray-500 text-sm text-center py-6 mt-auto">
+  © <span id="year"></span> Lynx Argon Op
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const prices = document.querySelectorAll(".price");
+
+  function format(amount, cur){
+    try { return new Intl.NumberFormat(undefined,{style:"currency",currency:cur}).format(amount); }
+    catch { return cur + " " + amount; }
+  }
+
+  async function updatePrices(){
+    if (!prices.length) return;
+
+    try {
+      const r = await fetch('https://ipapi.co/json/');
+      const info = await r.json();
+      const cur = info.currency || "INR";
+
+      prices.forEach(async (p) => {
+        const INR = Number(p.dataset.inr);
+        const USD_MAIN = Number(p.dataset.usdMain);
+        const USD_REST = Number(p.dataset.usdRest);
+
+        let price = INR;
+        let curr = "INR";
+
+        if (cur === "INR" || info.country === "IN") {
+          curr = "INR";
+          price = INR;
+        }
+        else if (["USD","EUR","GBP"].includes(cur)) {
+          curr = cur;
+          price = USD_MAIN;
+        }
+        else {
+          curr = cur;
+          try {
+            const rr = await fetch(`https://api.exchangerate.host/convert?from=USD&to=${curr}&amount=${USD_REST}`);
+            const data = await rr.json();
+            price = Number(data.result?.toFixed(2)) || USD_REST;
+          } catch {
+            curr = "USD";
+            price = USD_REST;
+          }
+        }
+
+        p.textContent = format(price, curr);
+      });
+
+    } catch {
+      prices.forEach(p => {
+        p.textContent = `₹${p.dataset.inr}`;
+      });
+    }
+  }
+
+  updatePrices();
+</script>
+
+</body>
+</html>

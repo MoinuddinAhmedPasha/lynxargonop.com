@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Special Molecules | Lynx Argon Op</title>
+  <meta name="description"
+        content="Special and important molecules explained with chemistry by Lynx Argon Op.">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+
+
+  <style>
+    body{
+      margin:0;
+      overflow-x:hidden;
+      background:radial-gradient(circle at top left,#0f172a 0%,#020617 100%);
+      color:#e5e7eb;
+      font-family:Poppins,system-ui,sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-40 bg-slate-900/80 backdrop-blur border-b border-slate-700/60">
+  <div class="max-w-md mx-auto px-4 h-14 flex items-center">
+    <a href="/medicines/index.html" class="text-indigo-400 font-semibold">
+      ← Medicines
+    </a>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="px-4 py-8">
+
+  <!-- TITLE -->
+  <div class="max-w-md mx-auto mb-6">
+    <h1 class="text-2xl font-extrabold text-slate-300 mb-1">
+      ⚡ Special Molecules
+    </h1>
+    <p class="text-sm text-gray-400">
+      Important chemical molecules with medical and biological relevance.
+    </p>
+  </div>
+
+  <!-- GRID -->
+  <div class="max-w-md mx-auto grid grid-cols-2 gap-4">
+
+    <a href="caffeine.html" class="card from-slate-500 to-gray-700">
+      Caffeine
+    </a>
+
+    <a href="nicotine.html" class="card from-gray-500 to-zinc-700">
+      Nicotine
+    </a>
+
+    <a href="morphine.html" class="card from-zinc-500 to-slate-700">
+      Morphine
+    </a>
+
+    <a href="codeine.html" class="card from-slate-600 to-gray-800">
+      Codeine
+    </a>
+
+    <a href="lidocaine.html" class="card from-gray-600 to-zinc-800">
+      Lidocaine
+    </a>
+
+    <a href="adrenaline.html" class="card from-rose-600 to-red-800">
+      Adrenaline
+    </a>
+
+    <a href="dopamine.html" class="card from-indigo-600 to-purple-800">
+      Dopamine
+    </a>
+
+    <a href="serotonin.html" class="card from-pink-600 to-rose-800">
+      Serotonin
+    </a>
+
+    <a href="nitroglycerin.html" class="card from-orange-600 to-red-800">
+      Nitroglycerin
+    </a>
+
+    <a href="urea.html" class="card from-emerald-600 to-green-800">
+      Urea
+    </a>
+
+  </div>
+
+
+
+  <!-- DISCLAIMER -->
+  <p class="text-xs text-gray-500 mt-6 text-center max-w-md mx-auto">
+    ⚠️ Educational content only. Not medical advice.
+  </p>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-slate-700/60 py-4 text-center text-xs text-gray-500">
+  © <span id="year"></span> Lynx Argon Op
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+<!-- CARD STYLE -->
+<style>
+  .card{
+    padding:1.1rem;
+    border-radius:1rem;
+    font-size:.9rem;
+    font-weight:600;
+    text-align:center;
+    color:white;
+    background:linear-gradient(135deg,var(--tw-gradient-from),var(--tw-gradient-to));
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
+    transition:.25s;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+  }
+  .card:active{
+    transform:scale(.96);
+  }
+</style>
+
+</body>
+</html>

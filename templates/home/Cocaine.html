@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="google-adsense-account" content="ca-pub-5090100160309579">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5090100160309579"
+     crossorigin="anonymous"></script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#020617">
+  <title>Lynx Argon Op — Official Hoodie Store</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Firebase (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <!-- Razorpay Checkout -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <style>
+    body { background: radial-gradient(circle at top left, #0f172a 0%, #020617 100%); color: #e2e8f0; }
+    .card { background: linear-gradient(145deg, #0f172a, #111827); box-shadow: 0 8px 30px rgba(0,0,0,0.45); }
+    .strike { text-decoration: line-through; opacity: 0.6; }
+  </style>
+</head>
+<body class="antialiased font-sans">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-slate-900/80 border-b border-slate-700">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <a href="/index.html" class="flex items-center gap-3">
+        <img src="images/dp.jpg" alt="logo" class="w-9 h-9 rounded-full object-cover border-2 border-indigo-500/50">
+        <span class="text-indigo-300 font-semibold">Lynx Argon Op</span>
+      </a>
+      <nav class="hidden sm:flex gap-4 items-center">
+        <a href="/index.html" class="text-sm text-gray-300 hover:text-indigo-400">Home</a>
+        <a href="/merch.html" class="text-sm px-3 py-1 rounded-md bg-indigo-600/10 text-indigo-300 shadow-sm">Merch</a>
+      </nav>
+      <div class="sm:hidden">
+        <a href="/index.html" class="text-sm text-indigo-300">Home</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <section class="text-center mb-8">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-indigo-400">High On Cocaine — Official Hoodie</h1>
+      <p class="mt-2 text-sm text-gray-400 max-w-2xl mx-auto">350 GSM Premium Cotton Hoodie, Unisex Fit. Limited Drop — Get Yours Now.</p>
+    </section>
+
+    <!-- Product / Layout: mobile-first -->
+ <div class="card rounded-2xl p-6 mx-auto max-w-md">
+  <!-- Slider Container -->
+  <div class="relative w-full overflow-hidden rounded-xl border border-indigo-500/20">
+    
+    <!-- Slides -->
+    <div id="slider" class="flex transition-transform duration-500 ease-in-out">
+      <img src="images/casual-comfy-hoodie-mockup-with-front-pouch-pocket-and-adjustable-drawstring-hood-seo-0956 (1).jpg" 
+           alt="High On Cocaine Hoodie" 
+           class="w-full h-72 object-cover flex-shrink-0">
+      <img src="images/coc pic.jpg" 
+           alt="Hoodie Design — High On Cocaine" 
+           class="w-full h-72 object-cover bg-black p-2 flex-shrink-0">
+    </div>
+
+    <!-- Navigation Buttons -->
+    <button id="prevBtn" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 text-xs hover:bg-black/60">&#10094;</button>
+    <button id="nextBtn" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 text-xs hover:bg-black/60">&#10095;</button>
+
+  </div>
+</div>
+
+<script>
+  const slider = document.getElementById('slider');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  let currentSlide = 0;
+
+  nextBtn.addEventListener('click', () => {
+    currentSlide = (currentSlide + 1) % 2;
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+  });
+
+  prevBtn.addEventListener('click', () => {
+    currentSlide = (currentSlide - 1 + 2) % 2;
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+  });
+</script>
+
+
+        <!-- Title & Price -->
+        <div class="text-center">
+          <h2 class="text-xl font-semibold text-indigo-300">High On Cocaine Hoodie</h2>
+          <p class="text-sm text-gray-400 mt-1">Unisex · Ultra Soft · Ships worldwide</p>
+
+          <div class="mt-4 flex items-center justify-center gap-3">
+            <!-- dynamic price -->
+            <div id="displayPrice" class="text-3xl font-bold text-indigo-400">Loading...</div>
+       
+          </div>
+
+          <p class="mt-2 text-xs text-gray-400">Inclusive of all taxes</p>
+        </div>
+<br>
+        <!-- Buy button -->
+        <div class="w-full">
+          <button id="buyBtn" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-3 rounded-lg shadow-md transition">
+            Buy Now
+          </button>
+        </div>
+      </div>
+    </div>
+<br>
+
+
+  </main>
+
+  <!-- Checkout Modal (collect shipping & phone & size) -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 px-4">
+    <div class="bg-slate-800 rounded-lg max-w-lg w-full p-5 scale-75 sm:scale-100">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-lg font-semibold text-indigo-300">Shipping & Contact</h3>
+        <button id="closeModal" class="text-gray-400 hover:text-gray-200">&times;</button>
+      </div>
+
+      <form id="checkoutForm" class="space-y-3">
+        <input name="name" placeholder="Full name" required class="w-full p-3 rounded bg-slate-900 text-gray-100" />
+        <input name="phone" placeholder="Phone number (with country code if outside India)" required class="w-full p-3 rounded bg-slate-900 text-gray-100" />
+        <input name="line1" placeholder="Address line 1" required class="w-full p-3 rounded bg-slate-900 text-gray-100" />
+        <input name="line2" placeholder="Address line 2 (optional)" class="w-full p-3 rounded bg-slate-900 text-gray-100" />
+        <div class="flex gap-2">
+          <input name="city" placeholder="City" required class="flex-1 p-3 rounded bg-slate-900 text-gray-100" />
+          <input name="postal" placeholder="Postal code" required class="w-36 p-3 rounded bg-slate-900 text-gray-100" />
+        </div>
+
+   <!-- ===================== COUNTRY + SIZE ===================== -->
+<div class="flex flex-col sm:flex-row gap-3">
+
+  <!-- COUNTRY -->
+  <div class="flex-1">
+    <label for="countrySelect" class="block text-sm text-gray-300 mb-1">Country</label>
+    <select id="countrySelect" name="country" required>
+      <option value="" selected disabled>Search your country...</option>
+    </select>
+  </div>
+
+  <!-- SIZE -->
+  <div class="sm:w-36">
+    <label for="size" class="block text-sm text-gray-300 mb-1">Size</label>
+    <select id="size" name="size" required
+      class="w-full p-3 rounded-lg bg-slate-900 text-gray-100 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none transition">
+      <option value="">Select size</option>
+      <option>S</option><option>M</option><option>L</option><option>XL</option>
+    </select>
+  </div>
+
+</div>
+
+<!-- Tom Select Library -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+<script>
+  // Full country list
+  const countries = [
+    "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan",
+    "Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi",
+    "Cambodia","Cameroon","Canada","Cape Verde","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo (Brazzaville)","Congo (Kinshasa)","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic",
+    "Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia",
+    "Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana",
+    "Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan",
+    "Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives",
+    "Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar",
+    "Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman",
+    "Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda",
+    "Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria",
+    "Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu",
+    "Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
+  ];
+
+  const selectEl = document.getElementById('countrySelect');
+  countries.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    selectEl.appendChild(opt);
+  });
+
+  // Force modal container to allow overflow (so dropdown can show)
+  const modalContainer = document.querySelector('#checkoutModal > div');
+  if (modalContainer) modalContainer.style.overflow = 'visible';
+
+  // Initialize TomSelect attached to BODY, but above modal layer
+  new TomSelect('#countrySelect', {
+    create: false,
+    placeholder: 'Search your country...',
+    sortField: { field: 'text', direction: 'asc' },
+    maxOptions: 400,
+    dropdownParent: 'body',
+    render: {
+      item: (data, escape) =>
+        `<div class='text-gray-100 text-sm bg-slate-800 border border-slate-700 px-2 py-1 rounded-md'>${escape(data.text)}</div>`,
+      option: (data, escape) =>
+        `<div class='option text-sm'>${escape(data.text)}</div>`
+    }
+  });
+
+  // Raise dropdown z-index manually (guaranteed visible)
+  const style = document.createElement('style');
+  style.textContent = `.ts-dropdown { z-index: 999999 !important; position: absolute !important; }`;
+  document.head.appendChild(style);
+</script>
+
+
+        <div class="flex gap-2">
+          <button type="submit" id="placeOrderBtn" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white p-3 rounded">Pay & Place Order</button>
+          <button type="button" id="cancelOrder" class="bg-slate-700 hover:bg-slate-600 text-gray-100 p-3 rounded">Cancel</button>
+        </div>
+
+        <p id="formMsg" class="text-sm text-gray-400 mt-2"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-700 text-gray-500 text-sm text-center py-6">
+    © <span id="year"></span> Lynx Argon Op
+  </footer>
+
+  <!-- Script: Firebase + Razorpay logic + country/currency handling -->
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---------- FIREBASE CONFIG ----------
+    const firebaseConfig = {
+      apiKey: "AIzaSyAQjsPZrFASy1qimq6cNh8WFAALDwXNUjk",
+      authDomain: "lynxargonop.firebaseapp.com",
+      projectId: "lynxargonop",
+      storageBucket: "lynxargonop.firebasestorage.app",
+      messagingSenderId: "416015678061",
+      appId: "1:416015678061:web:3d65fb425a2614a7465d64",
+      measurementId: "G-78L0PFVRSP"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ---------- RAZORPAY KEY (LIVE as requested) ----------
+    const RAZORPAY_KEY_ID = "rzp_live_RfCriOFrwAKHdO";
+
+    // ---------- Product base amounts ----------
+    const INR_PRICE = 1299;        // INR (for India)
+    const USD_PRICE_MAIN = 60;     // For USD / GBP / EUR regions (50 in their currency)
+    const USD_PRICE_REST = 50;     // For rest-of-world base: $40 converted to local currency
+
+    // ---------- currency exponent handling ----------
+    // Many currencies have 2 decimal places (exponent 2). Some use 0 or 3.
+    // We keep lists for 0-decimal and 3-decimal currencies; default exponent = 2.
+    const ZERO_EXP_CURRENCIES = new Set([
+      "BIF","CLP","DJF","GNF","ISK","JPY","KMF","PYG","RWF","UGX","VND","VUV","XAF","XOF","XPF"
+    ]);
+    const THREE_EXP_CURRENCIES = new Set([
+      "BHD","IQD","JOD","KWD","OMR","TND"
+    ]);
+    function minorUnitMultiplier(curr) {
+      if (ZERO_EXP_CURRENCIES.has(curr)) return 1;
+      if (THREE_EXP_CURRENCIES.has(curr)) return 1000;
+      return 100; // default: 2 decimal places
+    }
+
+    // ---------- UI elements ----------
+    const displayPriceEl = document.getElementById('displayPrice');
+    const buyBtn = document.getElementById('buyBtn');
+    const checkoutModal = document.getElementById('checkoutModal');
+    const closeModal = document.getElementById('closeModal');
+    const cancelOrder = document.getElementById('cancelOrder');
+    const checkoutForm = document.getElementById('checkoutForm');
+    const formMsg = document.getElementById('formMsg');
+
+    closeModal.addEventListener('click', () => checkoutModal.classList.add('hidden'));
+    cancelOrder.addEventListener('click', () => checkoutModal.classList.add('hidden'));
+
+    // Hold current pricing context to use during checkout
+    let pricingContext = {
+      country: "India",
+      currency: "INR",
+      displayAmount: INR_PRICE, // number
+      amountMinor: INR_PRICE * 100, // integer minor units (default)
+      formatted: `₹${INR_PRICE}`
+    };
+
+    // util: format currency nicely
+    function formatCurrency(amountNumber, currencyCode) {
+      try {
+        // amountNumber is numeric (major unit)
+        return new Intl.NumberFormat(undefined, { style: 'currency', currency: currencyCode, maximumFractionDigits: 2 }).format(amountNumber);
+      } catch (e) {
+        // Fallback
+        return currencyCode + ' ' + amountNumber;
+      }
+    }
+
+    // Fetch visitor info (country & currency) and set pricing
+    async function determinePricingAndDisplay() {
+      try {
+        const r = await fetch('https://ipapi.co/json/');
+        if (!r.ok) throw new Error('ipapi error');
+        const info = await r.json();
+        const visitorCountry = info.country_name || "India";
+        const visitorCurrency = info.currency || "INR"; // ipapi typically returns 'currency'
+        // Normalize codes for some edge cases:
+        const cur = visitorCurrency.toUpperCase();
+
+        let displayMajor = INR_PRICE;
+        let currencyCode = "INR";
+
+        if (cur === "INR" || info.country === "IN") {
+          // India: fixed INR
+          currencyCode = "INR";
+          displayMajor = INR_PRICE;
+        } else if (cur === "USD" || cur === "EUR" || cur === "GBP") {
+          // If visitor's currency is one of USD/EUR/GBP, charge 50 in that currency
+          currencyCode = cur;
+          displayMajor = USD_PRICE_MAIN; // 50 in their currency
+        } else {
+          // Rest of world: convert $40 to their local currency (from USD)
+          currencyCode = cur || "USD";
+          // fetch conversion
+          try {
+            const convResp = await fetch(`https://api.exchangerate.host/convert?from=USD&to=${encodeURIComponent(currencyCode)}&amount=${USD_PRICE_REST}`);
+            if (convResp.ok) {
+              const convJson = await convResp.json();
+              if (convJson && typeof convJson.result === 'number') {
+                // convJson.result is the major-unit amount in visitor currency
+                displayMajor = Number(convJson.result.toFixed(2));
+              } else {
+                // fallback: use USD 40 and set currency to USD
+                currencyCode = "USD";
+                displayMajor = USD_PRICE_REST;
+              }
+            } else {
+              // fallback
+              currencyCode = "USD";
+              displayMajor = USD_PRICE_REST;
+            }
+          } catch (err) {
+            currencyCode = "USD";
+            displayMajor = USD_PRICE_REST;
+          }
+        }
+
+        // compute minor units according to currency exponent
+        const multiplier = minorUnitMultiplier(currencyCode);
+        // Round carefully: compute minor amount as integer = Math.round(displayMajor * multiplier)
+        // Do digit-by-digit style safe calculation
+        const minor = Math.round((displayMajor * multiplier) + 0.0000001);
+
+        // format string for display
+        const formatted = formatCurrency(displayMajor, currencyCode);
+
+        // Update global context
+        pricingContext = {
+          country: visitorCountry,
+          currency: currencyCode,
+          displayAmount: displayMajor,
+          amountMinor: minor,
+          formatted
+        };
+
+        // Update UI
+        displayPriceEl.textContent = formatted;
+
+      } catch (err) {
+        // On error, fallback to INR
+        pricingContext = {
+          country: "India",
+          currency: "INR",
+          displayAmount: INR_PRICE,
+          amountMinor: INR_PRICE * 100,
+          formatted: `₹${INR_PRICE}`
+        };
+        displayPriceEl.textContent = pricingContext.formatted;
+        console.warn("Pricing detection failed, falling back to INR:", err);
+      }
+    }
+
+    // Initialize pricing right away
+    determinePricingAndDisplay();
+
+    // ---------- Open modal on buy ----------
+    buyBtn.addEventListener('click', () => {
+      formMsg.textContent = "";
+      // ensure displayed currency is set before opening modal (in case ip fetch was still running)
+      // (if not ready yet, a short wait)
+      if (!pricingContext || !pricingContext.currency) {
+        formMsg.textContent = "Detecting your location and currency... please wait a moment and click again.";
+        return;
+      }
+      checkoutModal.classList.remove('hidden');
+      setTimeout(()=> checkoutModal.querySelector('input[name="name"]').focus(), 120);
+    });
+
+    // ---------- Form submit and Razorpay checkout ----------
+    checkoutForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      formMsg.textContent = "Saving order...";
+      const data = Object.fromEntries(new FormData(checkoutForm).entries());
+
+      // Build order doc using the chosen pricing context
+      const orderDoc = {
+        productId: "hoodie-high-on-cocaine",
+        title: "High On Cocaine Hoodie",
+        price_major: pricingContext.displayAmount,
+        currency: pricingContext.currency,
+        price_minor: pricingContext.amountMinor,
+        size: data.size,
+        customer: {
+          name: data.name,
+          phone: data.phone,
+          address_line1: data.line1,
+          address_line2: data.line2,
+          city: data.city,
+          postal: data.postal,
+          country: data.country || pricingContext.country
+        },
+        status: "created",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        // Save draft order to Firestore
+        const docRef = await db.collection('orders').add(orderDoc);
+        formMsg.textContent = "Opening secure Razorpay checkout...";
+
+        // Razorpay options (charging in user's currency)
+        const options = {
+          key: RAZORPAY_KEY_ID,
+          amount: pricingContext.amountMinor, // integer in minor units
+          currency: pricingContext.currency,   // currency code
+          name: "Lynx Argon Op",
+          description: "High On Cocaine Hoodie",
+          image: "/images/dp.jpg",
+          // order_id: "", // ideally generated server-side via Orders API for verification
+          prefill: {
+            name: data.name || "",
+            contact: data.phone || ""
+          },
+          notes: {
+            firestore_order_id: docRef.id,
+            size: data.size,
+            price_major: pricingContext.displayAmount,
+            currency: pricingContext.currency
+          },
+          theme: {
+            color: "#6366f1"
+          },
+          handler: async function (response) {
+            try {
+              // mark order as paid in Firestore
+              await db.collection('orders').doc(docRef.id).update({
+                status: "paid",
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+                paidAt: firebase.firestore.FieldValue.serverTimestamp(),
+                paid_currency: pricingContext.currency,
+                paid_amount_minor: pricingContext.amountMinor,
+                paid_amount_major: pricingContext.displayAmount
+              });
+              formMsg.textContent = "";
+              checkoutModal.classList.add('hidden');
+              alert("Payment successful! Thank you — your order is placed.");
+            } catch (err) {
+              console.error("Error updating order after payment:", err);
+              formMsg.textContent = "Payment succeeded but there was an error saving the payment. We'll contact you.";
+            }
+          },
+          modal: {
+            ondismiss: function() {
+              formMsg.textContent = "Payment popup closed. Your order is still saved and pending payment.";
+            }
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+
+      } catch (err) {
+        console.error("Order save / checkout error:", err);
+        formMsg.textContent = "Could not create order. Try again.";
+      }
+    });
+
+  </script>
+</body>
+</html>

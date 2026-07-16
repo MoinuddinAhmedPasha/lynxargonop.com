@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="google-adsense-account" content="ca-pub-5090100160309579">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5090100160309579"
+     crossorigin="anonymous"></script>
+     <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#020617">
+  <title>HaloAlkanes & HaloArenes — Course</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Firebase v8 (Firestore ONLY) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <style>
+    body {
+      background:
+        radial-gradient(circle at top left, #1e293b 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #312e81 0%, transparent 35%),
+        #020617;
+      color: #e5e7eb;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .glass {
+      background: linear-gradient(145deg, #0b1220, #0f172a);
+      box-shadow:
+        0 15px 40px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+<!-- HEADER -->
+<header class="sticky top-0 z-40 border-b border-slate-700/60 bg-slate-900/80 backdrop-blur">
+  <div class="max-w-6xl mx-auto px-4 flex items-center h-16 gap-3">
+    <img src="images/dp.jpg"
+      class="w-9 h-9 rounded-full border-2 border-indigo-500/60">
+    <div>
+      <h1 class="text-sm font-semibold text-indigo-300 leading-tight">
+        Lynx Argon Op
+      </h1>
+      <p class="text-[11px] text-gray-400">
+        First Human to Teach Chemistry in Minecraft
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<main class="flex-1 max-w-5xl mx-auto px-4 py-12">
+
+  <h2 class="text-3xl font-extrabold text-center text-indigo-300 mb-4">
+    HaloAlkanes & HaloArenes
+  </h2>
+
+  <p class="text-gray-400 text-center max-w-2xl mx-auto mb-10 text-sm">
+    Master Haloalkanes and Haloarenes with visual Minecraft-based explanations,
+    NCERT coverage and MCQs for NEET & JEE.
+  </p>
+
+  <!-- COURSE CARD -->
+  <div class="max-w-sm mx-auto glass rounded-2xl p-5 text-center">
+
+    <div class="relative rounded-xl overflow-hidden">
+      <img src="images/halo.jpg"
+        class="h-44 w-full object-cover">
+
+      <span class="absolute top-2 left-2 text-[10px] bg-indigo-600 px-2 py-0.5 rounded-full">
+        POPULAR
+      </span>
+    </div>
+
+    <h3 class="mt-4 text-lg font-semibold text-indigo-300">
+      Complete Chapter Course
+    </h3>
+
+    <p class="mt-2 text-xs text-gray-400 leading-relaxed">
+      ✔ Full NCERT coverage<br>
+      ✔ Visual Minecraft explanations<br>
+      ✔ Notes<br>
+      ✔ MCQs for NEET & JEE
+    </p>
+
+    <!-- PRICE AS CTA -->
+    <button
+      id="actionBtn"
+      class="mt-6 w-full py-3 rounded-xl text-lg font-bold
+             bg-gradient-to-r from-indigo-600 to-violet-600
+             hover:from-indigo-500 hover:to-violet-500
+             shadow-lg transition">
+      <span id="priceDisplay">Loading...</span>
+    </button>
+
+    <p class="text-[12px] text-gray-500 mt-3">
+      Note: The course access link will be sent to you manually within 24 hours after payment.
+Please wait and keep an eye on your WhatsApp / Instagram DMs.
+    </p>
+  </div>
+
+</main>
+
+<!-- BUY MODAL -->
+<div id="infoModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur z-50">
+  <div class="bg-slate-900 p-6 rounded-2xl w-80 shadow-xl">
+
+    <h2 class="text-lg font-semibold mb-4 text-indigo-400 text-center">
+      Enter Your Details
+    </h2>
+
+<input id="userName" type="text" placeholder="Your Name"
+ class="w-full p-3 rounded-lg bg-slate-800 text-white mb-3 outline-none">
+
+
+    <input id="userPhone" type="tel" placeholder="Phone Number"
+      class="w-full p-3 rounded-lg bg-slate-800 text-white mb-3 outline-none">
+
+    <input id="userInsta" type="text" placeholder="Instagram ID"
+      class="w-full p-3 rounded-lg bg-slate-800 text-white mb-4 outline-none">
+
+    <button id="submitInfo"
+      class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl shadow">
+      Continue to Pay
+    </button>
+
+    <button onclick="closeModal()"
+      class="w-full mt-3 text-gray-400 hover:text-white text-xs">
+      Cancel
+    </button>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="border-t border-slate-700/60 py-4 text-center text-[11px] text-gray-500">
+  © <span id="year"></span> Lynx Argon Op — Chemistry, Simplified.
+</footer>
+
+<!-- LOGIC (PRICE SAME AS GRID PAGE) -->
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAQjsPZrFASy1qimq6cNh8WFAALDwXNUjk",
+    authDomain: "lynxargonop.firebaseapp.com",
+    projectId: "lynxargonop",
+    storageBucket: "lynxargonop.appspot.com",
+    messagingSenderId: "416015678061",
+    appId: "1:416015678061:web:3d65fb425a2614a7465d64"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const priceDisplay = document.getElementById("priceDisplay");
+  const actionBtn = document.getElementById("actionBtn");
+
+  let PAYMENT = { amount: 9900, currency: "INR", label: "₹99" };
+
+  fetch("https://ipapi.co/json/")
+    .then(res => res.json())
+    .then(loc => setPrice(loc.country))
+    .catch(() => setPrice("IN"));
+
+  function setPrice(country) {
+    const rates = {
+      IN: { amount: 9900, currency: "INR", label: "₹99" },
+      US: { amount: 500, currency: "USD", label: "$5" },
+      GB: { amount: 500, currency: "GBP", label: "£5" },
+      CA: { amount: 500, currency: "CAD", label: "$5 CAD" },
+      AU: { amount: 500, currency: "AUD", label: "$5 AUD" }
+    };
+
+    const EU = ["FR","DE","ES","IT","NL","BE","AT","IE","FI","PT"];
+
+    if (rates[country]) PAYMENT = rates[country];
+    else if (EU.includes(country))
+      PAYMENT = { amount: 500, currency: "EUR", label: "€5" };
+    else
+      PAYMENT = { amount: 500, currency: "USD", label: "$5" };
+
+    priceDisplay.textContent = PAYMENT.label;
+  }
+
+  actionBtn.onclick = openModal;
+
+  function openModal() {
+    infoModal.classList.remove("hidden");
+    infoModal.classList.add("flex");
+  }
+  function closeModal() {
+    infoModal.classList.add("hidden");
+  }
+
+  submitInfo.onclick = async () => {
+    const name = userName.value.trim();
+    const phone = userPhone.value.trim();
+    const insta = userInsta.value.trim();
+
+    if (!name || !phone || !insta) {
+      return alert("Please fill all details");
+    }
+
+    const orderRef = await db.collection("orders").add({
+      name,
+      phone,
+      instagram: insta,
+      course: "haloalkanes",
+      status: "initiated",
+      amount: PAYMENT.amount,
+      currency: PAYMENT.currency,
+      createdAt: new Date()
+    });
+
+    closeModal();
+
+    new Razorpay({
+      key: "rzp_live_RfCriOFrwAKHdO",
+      amount: PAYMENT.amount,
+      currency: PAYMENT.currency,
+      name: "HaloAlkanes & HaloArenes",
+      description: "Course Enrollment",
+      handler: async res => {
+        await orderRef.update({
+          status: "paid",
+          payment_id: res.razorpay_payment_id,
+          paidAt: new Date()
+        });
+
+        alert("Payment successful! We’ll contact you soon.");
+      }
+    }).open();
+  };
+</script>
+
+</body>
+</html>

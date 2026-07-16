@@ -1,0 +1,4 @@
+#Fri Feb 20 22:08:15 IST 2026
+base.0=C\:\\Users\\ahmed\\OneDrive\\Desktop\\lynxargonop.com\\app\\build\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

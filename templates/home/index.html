@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#090b10">
+<title>Lynx Argon Op</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #090b10;
+    --card: #11141c;
+    --card-top: #161a26;
+    --card-border: #242a3a;
+    --text-main: #f2f4f9;
+    --text-soft: #8b90a3;
+    --text-faint: #4d5265;
+    --accent: #4fd1c5;
+    --accent-2: #8fe9dd;
+    --accent-warm: #f5b942;
+    --accent-soft: rgba(79,209,197,0.13);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html, body{
+    height:100%;
+    overflow:hidden;
+    overscroll-behavior:none;
+  }
+
+  body{
+    font-family:'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
+    width:100vw;
+    height:100dvh;
+    position:fixed;
+    inset:0;
+  }
+
+  h1,h2,h3,.hero-name{ font-family:'Space Grotesk', sans-serif; }
+
+  #three-bg{ position:fixed; inset:0; z-index:0; }
+
+  .app{
+    position:fixed; inset:0; z-index:10;
+    display:flex; flex-direction:column;
+    height:100dvh;
+    overflow:hidden;
+  }
+
+  .content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-evenly;
+    align-items:stretch;
+    overflow:hidden;
+    padding: clamp(14px,4vh,26px) 16px 6px;
+    min-height:0;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    text-align:center;
+    padding-bottom: clamp(6px,1.6vh,14px);
+  }
+
+  /* signature: benzene-ring line art, quietly rotating behind the name —
+     the one place chemistry and interface geometry share a shape */
+  .ring-motif{
+    position:absolute;
+    top:50%; left:50%;
+    width: clamp(220px, 62vw, 340px);
+    height: clamp(220px, 62vw, 340px);
+    transform: translate(-50%,-52%);
+    z-index:-1;
+    opacity:0.55;
+    animation: ringspin 60s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes ringspin{ from{ transform: translate(-50%,-52%) rotate(0deg);} to{ transform: translate(-50%,-52%) rotate(360deg);} }
+
+  .hero-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color: var(--accent-2);
+    font-family:'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    margin-bottom: 9px;
+    opacity:0;
+    animation: fadeup .6s ease .05s forwards;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after{
+    content:"";
+    width:14px; height:1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  .hero-name{
+    font-size: clamp(20px, 6vw, 27px);
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    background: linear-gradient(100deg, var(--text-main) 20%, var(--accent-2) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-bottom: 4px;
+    opacity:0;
+    animation: fadeup .6s ease .12s forwards;
+  }
+
+  .hero-sub{
+    font-size: clamp(10px, 2.6vw, 11.5px);
+    color: var(--text-soft);
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 0.2px;
+    margin-bottom: clamp(6px,1.2vh,9px);
+    opacity:0;
+    animation: fadeup .6s ease .18s forwards;
+  }
+
+  /* terminal-style role cycler, the fusion of scientist + engineer identity */
+  .hero-roles{
+    font-family:'JetBrains Mono', monospace;
+    font-size: clamp(10px, 2.6vw, 11.5px);
+    font-weight:500;
+    color: var(--accent-2);
+    margin-bottom: clamp(10px,1.8vh,14px);
+    opacity:0;
+    animation: fadeup .6s ease .22s forwards;
+    min-height:16px;
+  }
+  .hero-roles .prompt{ color: var(--text-faint); margin-right:2px; }
+  .hero-roles .cursor{
+    display:inline-block; width:6px; height:12px; margin-left:2px;
+    background: var(--accent-2); vertical-align:-1px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+  .hero-desc{
+    font-size: clamp(11px, 2.8vw, 12.5px);
+    color: var(--text-soft);
+    line-height: 1.6;
+    max-width: 340px;
+    margin: 0 auto clamp(10px,1.8vh,14px);
+    opacity:0;
+    animation: fadeup .6s ease .28s forwards;
+  }
+
+  @keyframes fadeup{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+  .stats-row{
+    display:flex; gap:7px; justify-content:center; flex-wrap:wrap;
+    opacity:0;
+    animation: fadeup .6s ease .34s forwards;
+  }
+
+  .stat-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size: 10.5px; font-weight:600; color: var(--text-soft);
+    background: linear-gradient(160deg, var(--card-top), var(--card));
+    border:1px solid var(--card-border);
+    padding: 5px 12px 5px 6px;
+    border-radius: 999px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 6px 14px rgba(0,0,0,0.3);
+  }
+
+  .stat-dot{
+    width:16px; height:16px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(160deg, rgba(79,209,197,0.3), rgba(79,209,197,0.08));
+    border: 1px solid rgba(79,209,197,0.4);
+    font-size:9px;
+  }
+
+  /* ---------- SECTION LABEL ---------- */
+  .section-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 0 0 8px 2px;
+    font-weight:600;
+  }
+
+  /* ---------- EXPLORE GRID ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-bottom: 10px;
+  }
+
+  .card{
+    --mx:50%; --my:50%;
+    --rx:0deg; --ry:0deg;
+    position:relative;
+    border-radius: 14px;
+    height: clamp(70px, 14vh, 108px);
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:5px;
+    text-decoration:none;
+    overflow:hidden;
+    background: linear-gradient(160deg, var(--card-top), var(--card));
+    border: 1px solid rgba(var(--c-rgb), 0.35);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.05) inset,
+      0 8px 18px rgba(0,0,0,0.35);
+    transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease, border-color .25s ease;
+  }
+
+  /* corner-bracket, spec-tile framing — a lab-label reference on every card */
+  .card::before{
+    content:"";
+    position:absolute; inset:0;
+    background: radial-gradient(circle at var(--mx) var(--my), rgba(var(--c-rgb),0.3), transparent 65%);
+    opacity:0; transition: opacity .25s ease;
+    pointer-events:none;
+  }
+
+  .card::after{
+    content:"";
+    position:absolute; top:7px; left:7px; right:7px; bottom:7px;
+    border-radius:9px;
+    border: 1px dashed rgba(var(--c-rgb),0.22);
+    pointer-events:none;
+    transition: border-color .25s ease;
+  }
+
+  .card-shine{
+    position:absolute; top:0; left:-60%; width:40%; height:100%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,0.14), transparent);
+    transform: skewX(-18deg);
+    pointer-events:none;
+    transition: left .55s ease;
+  }
+  .card:hover .card-shine{ left:130%; }
+
+  .card:hover{
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 18px 30px rgba(0,0,0,0.45),
+      0 0 26px rgba(var(--c-rgb),0.28);
+    border-color: rgba(var(--c-rgb),0.7);
+  }
+  .card:hover::before{ opacity:1; }
+  .card:hover::after{ border-color: rgba(var(--c-rgb),0.5); }
+  .card:active{ transform: perspective(700px) scale(0.97); }
+
+  .card-icon{
+    position:relative; z-index:2;
+    width:32px; height:32px;
+    border-radius:9px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px;
+    background: linear-gradient(160deg, rgba(var(--c-rgb),0.3), rgba(var(--c-rgb),0.08));
+    border:1px solid rgba(var(--c-rgb),0.4);
+    box-shadow: 0 0 14px rgba(var(--c-rgb),0.28);
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+  }
+  .card:hover .card-icon{ transform: scale(1.1) rotate(-4deg); }
+
+  .card-label{
+    position:relative; z-index:2;
+    font-family:'Space Grotesk', sans-serif;
+    font-size: clamp(11px,2.8vw,12.5px);
+    font-weight:700;
+    color:#fff;
+    text-shadow: 0 0 12px rgba(var(--c-rgb),0.55);
+  }
+
+  .card-tag{
+    position:relative; z-index:2;
+    font-family:'JetBrains Mono', monospace;
+    font-size:8px;
+    font-weight:500;
+    letter-spacing:0.6px;
+    text-transform:uppercase;
+    color: rgba(var(--c-rgb),0.9);
+  }
+
+  .c-yt{ --c-rgb: 251,146,60; }
+  .c-med{ --c-rgb: 56,189,248; }
+  .c-game{ --c-rgb: 52,211,153; }
+  .c-merch{ --c-rgb: 245,185,66; }
+
+  .resume-cta{
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:18px 20px;
+    border-radius:18px;
+    text-decoration:none;
+    background:linear-gradient(150deg,#151a26,#0e1119);
+    border:1px solid rgba(79,209,197,.25);
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    box-shadow:0 14px 30px rgba(0,0,0,.4), inset 0 1px rgba(255,255,255,.04);
+  }
+  .resume-glow{
+    position:absolute;
+    inset:-2px;
+    background:linear-gradient(90deg,#4fd1c5,#38bdf8,#f5b942,#4fd1c5);
+    background-size:300%;
+    animation:borderMove 6s linear infinite;
+    filter:blur(20px);
+    opacity:.28;
+  }
+  @keyframes borderMove{
+    from{background-position:0%;}
+    to{background-position:300%;}
+  }
+  .resume-cta:hover{
+    transform:translateY(-4px);
+    box-shadow:0 22px 40px rgba(0,0,0,.55),0 0 30px rgba(79,209,197,.32);
+    border-color:#4fd1c5;
+  }
+  .resume-cta-icon{
+    width:52px;height:52px;display:flex;align-items:center;justify-content:center;
+    border-radius:14px;font-size:24px;background:rgba(79,209,197,.12);
+    border:1px solid rgba(79,209,197,.35);transition:transform .3s ease;z-index:2;
+    flex-shrink:0;
+  }
+  .resume-cta:hover .resume-cta-icon{transform:rotate(-8deg) scale(1.08);}
+  .resume-cta-text{flex:1;z-index:2; min-width:0;}
+  .resume-cta-title{font-family:'Space Grotesk',sans-serif; font-size:17px;font-weight:800;color:#fff;margin-bottom:3px;}
+  .resume-cta-sub{font-size:11.5px;color:#9195a8; font-family:'JetBrains Mono', monospace; letter-spacing:.2px;}
+  .resume-cta-arrow{font-size:24px;color:#4fd1c5;transition:transform .3s ease;z-index:2; flex-shrink:0;}
+  .resume-cta:hover .resume-cta-arrow{transform:translateX(6px);}
+
+  /* ---------- TECH STACK STRIP ---------- */
+  .formula-strip{
+    display:flex; gap:7px;
+    overflow-x:auto;
+    padding-bottom:2px;
+    scrollbar-width:none;
+    margin-bottom: clamp(6px,1.4vh,10px);
+  }
+  .formula-strip::-webkit-scrollbar{ display:none; }
+
+  .formula-tag{
+    flex-shrink:0;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight:500;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(79,209,197,0.28);
+    color: var(--accent-2);
+    white-space:nowrap;
+  }
+
+  /* ---------- BOTTOM NAV ---------- */
+  .bottom-nav{
+    flex-shrink:0;
+    margin: 0 12px clamp(8px,1.6vh,14px);
+    border-radius: 18px;
+    background: linear-gradient(160deg, var(--card-top), var(--card));
+    border: 1px solid var(--card-border);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 -6px 24px rgba(0,0,0,0.35);
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    padding: 8px 2px;
+  }
+
+  .nav-item{
+    position:relative;
+    display:flex; flex-direction:column; align-items:center; gap:2px;
+    text-decoration:none;
+    color: var(--text-faint);
+    font-size: 9.5px;
+    font-weight:600;
+    padding: 3px 8px;
+    border-radius: 10px;
+    transition: color .2s ease, transform .15s ease;
+  }
+  .nav-item.active, .nav-item:hover{ color: var(--accent-2); }
+  .nav-item.active::before{
+    content:"";
+    position:absolute;
+    top:-2px; left:50%; transform:translateX(-50%);
+    width:4px; height:4px; border-radius:50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+  .nav-item:active{ transform: scale(0.9); }
+  .nav-icon{ font-size:18px; line-height:1; }
+
+  /* focus visibility for keyboard users */
+  a:focus-visible{
+    outline: 2px solid var(--accent-2);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  /* floating ambient labels — chemistry and code, side by side */
+  .mol{
+    position:fixed;
+    font-family:'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-size: 10px;
+    opacity: 0.1;
+    pointer-events:none;
+    animation: floatup linear infinite;
+    z-index:1;
+    white-space:nowrap;
+  }
+  @keyframes floatup{
+    0%{ transform: translateY(100vh) rotate(0deg); opacity:.1; }
+    100%{ transform: translateY(-10vh) rotate(360deg); opacity:0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+    .hero-eyebrow, .hero-name, .hero-sub, .hero-roles, .hero-desc, .stats-row{ opacity:1; }
+  }
+</style>
+</head>
+<body>
+
+<div id="three-bg"></div>
+
+<div class="mol" style="left:8%;animation-duration:18s;animation-delay:0s;">H₂O</div>
+<div class="mol" style="left:22%;animation-duration:24s;animation-delay:4s;">import pandas as pd</div>
+<div class="mol" style="left:55%;animation-duration:20s;animation-delay:2s;">C₆H₁₂O₆</div>
+<div class="mol" style="left:73%;animation-duration:16s;animation-delay:7s;">git commit -m</div>
+<div class="mol" style="left:88%;animation-duration:22s;animation-delay:1s;">CO₂</div>
+<div class="mol" style="left:40%;animation-duration:19s;animation-delay:9s;">SELECT * FROM</div>
+
+<div class="app">
+  <div class="content">
+
+    <div class="hero">
+      <svg class="ring-motif" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+        <polygon points="100,12 168,56 168,144 100,188 32,144 32,56"
+                 fill="none" stroke="#4fd1c5" stroke-width="1" opacity="0.55"/>
+        <polygon points="100,34 148,64 148,136 100,166 52,136 52,64"
+                 fill="none" stroke="#8fe9dd" stroke-width="1" opacity="0.3"/>
+        <circle cx="100" cy="12" r="2.4" fill="#4fd1c5"/>
+        <circle cx="168" cy="56" r="2.4" fill="#4fd1c5"/>
+        <circle cx="168" cy="144" r="2.4" fill="#4fd1c5"/>
+        <circle cx="100" cy="188" r="2.4" fill="#4fd1c5"/>
+        <circle cx="32" cy="144" r="2.4" fill="#4fd1c5"/>
+        <circle cx="32" cy="56" r="2.4" fill="#4fd1c5"/>
+      </svg>
+      <div class="hero-eyebrow">Chemistry • Full-Stack Dev • Data Science</div>
+      <div class="hero-name">Lynx Argon Op</div>
+      <div class="hero-sub">First to teach chemistry in Minecraft</div>
+      <div class="hero-roles"><span class="prompt">&gt;</span><span id="role-text"></span><span class="cursor"></span></div>
+      <p class="hero-desc">
+       [ Moinuddin Ahmed Pasha AKA LynX ArGoN Op ] Full-Stack Developer, Data Scientist, and Chemistry Educator passionate about building modern web applications, AI-powered solutions, and making science simple and engaging.
+      </p>
+      <div class="stats-row">
+        <span class="stat-pill"><span class="stat-dot">🧪</span>Chemistry</span>
+        <span class="stat-pill"><span class="stat-dot">⚗️</span>Pharmacology</span>
+        <span class="stat-pill"><span class="stat-dot">💻</span>Full-Stack Dev</span>
+        <span class="stat-pill"><span class="stat-dot">📊</span>Data Science</span>
+      </div>
+    </div>
+
+    <a href="/Resume.html" class="resume-cta">
+      <div class="resume-glow"></div>
+      <div class="resume-cta-icon">📄</div>
+      <div class="resume-cta-text">
+        <div class="resume-cta-title">Tech Resume Portfolio</div>
+        <div class="resume-cta-sub">Skills • Projects • Experience • Education</div>
+      </div>
+      <div class="resume-cta-arrow">→</div>
+    </a>
+
+    <div>
+      <div class="section-label">Explore</div>
+      <div class="grid">
+        <a href="https://yt.openinapp.co/l7b08" class="card c-yt" target="_blank">
+          <div class="card-shine"></div>
+          <div class="card-icon">▶</div>
+          <div class="card-label">YouTube</div>
+          <div class="card-tag">Watch</div>
+        </a>
+        <a href="/medicines/index.html" class="card c-med">
+          <div class="card-shine"></div>
+          <div class="card-icon">💊</div>
+          <div class="card-label">Medicines</div>
+          <div class="card-tag">Learn</div>
+        </a>
+        <a href="/games.html" class="card c-game">
+          <div class="card-shine"></div>
+          <div class="card-icon">🎮</div>
+          <div class="card-label">ChemCraft</div>
+          <div class="card-tag">Play</div>
+        </a>
+        <a href="/merch.html" class="card c-merch">
+          <div class="card-shine"></div>
+          <div class="card-icon">🛍️</div>
+          <div class="card-label">Merch</div>
+          <div class="card-tag">Shop</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="/index.html" class="nav-item active">
+      <div class="nav-icon">🏠</div>
+      <span>Home</span>
+    </a>
+    <a href="/medicines/index.html" class="nav-item">
+      <div class="nav-icon">💊</div>
+      <span>Medicines</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <div class="nav-icon">🎮</div>
+      <span>Games</span>
+    </a>
+    <a href="/Resume.html" class="nav-item">
+      <div class="nav-icon">📄</div>
+      <span>Resume</span>
+    </a>
+    <a href="https://yt.openinapp.co/l7b08" target="_blank" class="nav-item">
+      <div class="nav-icon">▶️</div>
+      <span>YT</span>
+    </a>
+  </nav>
+</div>
+
+<script>
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x090b10, 0.008);
+
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.z = 80;
+
+const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById('three-bg').appendChild(renderer.domElement);
+
+scene.add(new THREE.AmbientLight(0x1c2a2e, 0.8));
+
+const pl1 = new THREE.PointLight(0x4fd1c5, 2, 200);
+pl1.position.set(40, 40, 40);
+scene.add(pl1);
+
+const pl2 = new THREE.PointLight(0x8fe9dd, 1.5, 200);
+pl2.position.set(-50, -30, 30);
+scene.add(pl2);
+
+const pl3 = new THREE.PointLight(0xf5b942, 1, 150);
+pl3.position.set(0, 50, -40);
+scene.add(pl3);
+
+const starsGeo = new THREE.BufferGeometry();
+const sv = [];
+for(let i = 0; i < 2600; i++){
+  sv.push((Math.random()-.5)*800, (Math.random()-.5)*800, (Math.random()-.5)*800);
+}
+starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(sv, 3));
+const starMat = new THREE.PointsMaterial({color:0xffffff, size:0.8, transparent:true, opacity:0.6});
+scene.add(new THREE.Points(starsGeo, starMat));
+
+const atoms = [];
+const atomColors = [0x4fd1c5, 0x8fe9dd, 0xf5b942, 0x34d399, 0x60a5fa];
+for(let i = 0; i < 26; i++){
+  const geo = new THREE.IcosahedronGeometry(Math.random()*1.5+0.4, 0);
+  const mat = new THREE.MeshPhongMaterial({
+    color: atomColors[i % atomColors.length],
+    wireframe: Math.random() > 0.5,
+    transparent: true,
+    opacity: Math.random()*0.4+0.15
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(
+    (Math.random()-.5)*160,
+    (Math.random()-.5)*160,
+    (Math.random()-.5)*100
+  );
+  mesh.userData = {
+    vx: (Math.random()-.5)*0.06,
+    vy: (Math.random()-.5)*0.06,
+    rx: Math.random()*0.02,
+    ry: Math.random()*0.02
+  };
+  scene.add(mesh);
+  atoms.push(mesh);
+}
+
+let t = 0;
+function animate(){
+  requestAnimationFrame(animate);
+  t += 0.005;
+  pl1.position.x = Math.sin(t)*60;
+  pl1.position.y = Math.cos(t*0.7)*40;
+  pl2.position.x = Math.cos(t*1.3)*50;
+  pl2.position.y = Math.sin(t)*40;
+  atoms.forEach(a => {
+    a.position.x += a.userData.vx;
+    a.position.y += a.userData.vy;
+    a.rotation.x += a.userData.rx;
+    a.rotation.y += a.userData.ry;
+    if(Math.abs(a.position.x) > 80) a.userData.vx *= -1;
+    if(Math.abs(a.position.y) > 80) a.userData.vy *= -1;
+  });
+  scene.rotation.y += 0.0004;
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* spotlight + 3D tilt for explore cards */
+document.querySelectorAll('.card').forEach(el => {
+  el.addEventListener('mousemove', (e) => {
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    el.style.setProperty('--mx', (x/rect.width)*100 + '%');
+    el.style.setProperty('--my', (y/rect.height)*100 + '%');
+
+    const px = (x/rect.width) - 0.5;
+    const py = (y/rect.height) - 0.5;
+    el.style.setProperty('--ry', (px*10) + 'deg');
+    el.style.setProperty('--rx', (py*-10) + 'deg');
+  });
+  el.addEventListener('mouseleave', () => {
+    el.style.setProperty('--rx', '0deg');
+    el.style.setProperty('--ry', '0deg');
+  });
+});
+
+/* terminal-style role cycler — the multi-hyphenate identity, typed out */
+const roles = ["Chemistry Educator", "Full-Stack Developer", "Data Scientist", "Content Creator"];
+const roleEl = document.getElementById('role-text');
+let roleIdx = 0, charIdx = 0, deleting = false;
+
+function typeLoop(){
+  const current = roles[roleIdx];
+  if(!deleting){
+    charIdx++;
+    roleEl.textContent = current.slice(0, charIdx);
+    if(charIdx === current.length){
+      deleting = true;
+      setTimeout(typeLoop, 1400);
+      return;
+    }
+  } else {
+    charIdx--;
+    roleEl.textContent = current.slice(0, charIdx);
+    if(charIdx === 0){
+      deleting = false;
+      roleIdx = (roleIdx + 1) % roles.length;
+    }
+  }
+  setTimeout(typeLoop, deleting ? 30 : 55);
+}
+typeLoop();
+
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+</script>
+
+</body>
+</html>

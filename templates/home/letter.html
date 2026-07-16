@@ -1,0 +1,247 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Love ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+margin:40px 0;
+
+}
+
+body{
+min-height:100vh;   /* allow page to grow */
+display:flex;
+justify-content:center;
+align-items:flex-start; /* start from top so text flows naturally */
+font-family:Poppins;
+padding:40px 20px;
+overflow-x:hidden; /* only hide sideways scroll */
+overflow-y:auto;   /* allow vertical scroll */
+
+/* keep your magical gradient */
+background: linear-gradient(-45deg,#ff758c,#ff7eb3,#ffb199,#ff758c);
+background-size:400% 400%;
+animation:gradientBG 12s ease infinite;
+}
+
+
+@keyframes gradientBG{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+
+/* FLOATING HEARTS */
+
+.heart{
+position:fixed;
+bottom:-20px;
+width:14px;
+height:14px;
+background:white;
+transform:rotate(45deg);
+opacity:.6;
+animation:floatUp linear forwards;
+}
+
+.heart:before,
+.heart:after{
+content:'';
+position:absolute;
+width:14px;
+height:14px;
+background:white;
+border-radius:50%;
+}
+
+.heart:before{top:-7px;}
+.heart:after{left:-7px;}
+
+@keyframes floatUp{
+to{
+transform:translateY(-120vh) rotate(45deg);
+opacity:0;
+}
+}
+
+
+/* LETTER CARD */
+
+.letter{
+max-width:520px;
+width:100%;
+background:rgba(255,255,255,.92);
+border-radius:28px;
+padding:28px;
+text-align:center;
+box-shadow:0 20px 60px rgba(0,0,0,.25);
+backdrop-filter: blur(12px);
+
+animation:cardEntry 1.4s ease;
+}
+
+@keyframes cardEntry{
+from{
+transform:translateY(80px) scale(.95);
+opacity:0;
+}
+to{
+transform:translateY(0) scale(1);
+opacity:1;
+}
+}
+
+
+h1{
+font-family:'Great Vibes';
+font-size:clamp(38px,6vw,56px);
+color:#ff4e88;
+margin-bottom:12px;
+}
+
+.text{
+font-size:clamp(15px,4vw,18px);
+line-height:1.8;
+color:#444;
+white-space:pre-line;
+}
+
+
+
+
+
+/* EXTRA MOBILE OPTIMIZATION */
+
+@media (max-width:480px){
+
+body{
+padding:14px;
+}
+
+.letter{
+padding:22px;
+border-radius:22px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<div class="letter">
+
+<h1>My Love ❤️</h1>
+
+<div class="text">
+From the moment you walked into my life, everything changed in the most beautiful way possible. The world feels softer, brighter, and infinitely more meaningful with you in it. You are not just my happiness... you are my peace, my safe place, and the greatest blessing life has ever given me.
+
+I don’t just love you for today, or for this phase of our lives... I love you with a forever kind of love. The kind that grows stronger with time, survives every storm, and chooses you again and again, no matter what. If I had to live a thousand lifetimes, I would still search for you in every single one.
+
+Sometimes I replay our memories in my mind and smile like an idiot… especially thinking about the countless kisses we’ve shared... a hundred and more, yet it still feels like it will never be enough. And honestly, it never will be. I want to kiss you infinity times, hold you close, kiss your forehead gently, and remind you every single day how deeply you are loved.
+
+I want you to know how proud I am of you. Proud of your strength, your heart, your patience, and all the sacrifices you have made for me and for us. I see them... I remember them... And I promise you... I will spend my life making sure every sacrifice feels worth it.
+
+Thank you for loving me when I wasn’t easy to love.
+Thank you for standing beside me when life tested us.
+Thank you for being my partner, my comfort, and my home.
+
+With you, ordinary moments become magical. Even silence feels beautiful when I’m with you. That is how I know this is real. That is how I know it is you... always you.
+
+I promise to protect your heart, to support your dreams, to make you laugh when you forget how to smile, and to stand next to you through every chapter life writes for us.
+
+No matter where life takes us…
+No matter how many years pass…
+My hand will always search for yours.
+
+Forever yours,
+The one who will love you endlessly ❤️
+
+HAPPY VALENTINES DAY MY LOVE
+</div>
+
+</div>
+
+
+<button class="music-btn" onclick="toggleMusic()">🎵</button>
+
+
+<audio id="song" loop autoplay muted playsinline>
+<source src="love.mp3" type="audio/mpeg">
+</audio>
+
+
+
+<script>
+
+/* SMART AUTOPLAY */
+
+const song = document.getElementById("song");
+
+window.addEventListener("load", () => {
+
+let playPromise = song.play();
+
+if(playPromise !== undefined){
+playPromise.catch(() => {
+
+/* if blocked → enable sound on first tap */
+
+document.body.addEventListener("click", () => {
+song.muted = false;
+song.play();
+}, {once:true});
+
+});
+}
+
+});
+
+
+function toggleMusic(){
+
+if(song.paused){
+song.muted=false;
+song.play();
+}else{
+song.pause();
+}
+
+}
+
+
+
+/* FLOATING HEART GENERATOR */
+
+setInterval(()=>{
+
+const heart=document.createElement("div");
+heart.className="heart";
+
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(Math.random()*3+4)+"s";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),7000);
+
+},350);
+
+
+</script>
+
+</body>
+</html>
